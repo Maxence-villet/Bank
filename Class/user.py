@@ -8,7 +8,7 @@ router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class User:
-    id: int
+    id: str
     first_name: str
     last_name: str
     email: str
@@ -16,7 +16,7 @@ class User:
     register_at: datetime
 
     def __init__(self, first_name: str, last_name: str, email: str, password: str):
-        self.id = uuid4().int >> 64
+        self.id = str(uuid4())
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
