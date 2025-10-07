@@ -15,6 +15,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+accounts: list[Account] = []
+daily_deposit: dict[str, int] = {}
+
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
