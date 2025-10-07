@@ -35,7 +35,7 @@ def register_user(first_name: str, last_name: str, email: str, password: str) ->
 @router.post('/register')
 def register(first_name: str, last_name: str, email: str, password: str):
     register_user(first_name, last_name, email, password)
-    return {"message": "User registered successfully"}
+    return {"message": "User registered successfully", "status_code": 200}
 
 @router.get('/users')
 def get_users():

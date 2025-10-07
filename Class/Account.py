@@ -26,17 +26,22 @@ def generate_iban() -> str:
     return f"FR{unique_id:022d}"
 
 def get_number_of_accounts(user_id: str) -> int:
-    return len([account for account in accounts if account.user_id == user_id])
+    accounts_number = 0
+    for account in accounts:
+        if account.user_id == user_id:
+            accounts_number += 1
 
+    return accounts_number
+        
 def close_account(account_id: str) -> str:
     global accounts
     for account in accounts:
         if account.id == account_id:
             if account.id[0] == 'C':
-                return ("message:", "Cannot close a current account.", 403)
+                return {"message": "Cannot close a current account.", "status_code": 403}
             accounts.remove(account)
-            return ("message:", "Account closed successfully.", 200)
-    return ("error:", "Account not found.", 404)
+            return {"message": "Account closed successfully.", "status_code": 200}
+    return {"error": "Account not found.", "status_code":404}
 
 def open_account(user_id: str) -> Account:
     global accounts
@@ -59,15 +64,17 @@ def get_money(account_id: str) -> int:
             return account.amount
     return 0
 
-def deposit_money(account_id:str, amount:int):
+def deposit_money(account_id:str, amount:int) -> dict:
     global daily_deposit
     current_money=get_money(account_id)
 
     if amount < 1:
-        return False
+        return {"error": "Deposit failed. Amount is too low.", "status_code": 403}
+
 
     if current_money + amount > 200000:
-        return False
+        return {"error": "Deposit failed. Amount is too high.", "status_code": 403}
+
 
     if account_id in daily_deposit:
         daily_deposit[account_id] += amount
@@ -77,9 +84,7 @@ def deposit_money(account_id:str, amount:int):
     for account in accounts:
         if account.id == account_id:
             account.amount += amount
-            break
-
-    return True
+            return {"message": "Deposit successful.", "status_code": 200}
 
 @router.post("/open_account/")
 def api_open_account(id: str):
@@ -109,7 +114,5 @@ def api_get_daily_deposit(account_id: str):
 
 @router.patch("/deposit/{account_id}/{amount}")
 def api_deposit(account_id: str, amount: int):
-    success = deposit_money(account_id, amount)
-    if success:
-        return {"message": "Deposit successful."}
-    return {"error": "Deposit failed."}
+    message = deposit_money(account_id, amount)
+    return {message}
