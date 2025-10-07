@@ -1,7 +1,7 @@
 from datetime import datetime
 from uuid import uuid4
 from models.account import Account
-from utils.generate_iban import generate_iban
+from utils.iban_generator import iban_generator
 
 
 class CurrentAccount(Account):
@@ -9,7 +9,7 @@ class CurrentAccount(Account):
         self.id: str = "C" + str(uuid4())
         self.user_id: str = user_id
         self.amount: str = 0
-        self.iban: str = generate_iban()
+        self.iban: str = iban_generator()
         self.open_at: datetime = datetime.now()
     
     def __repr__(self) -> str:

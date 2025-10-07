@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import uuid4
-from utils.generate_iban import generate_iban
+from utils.iban_generator import iban_generator
 
 class Account:
 
@@ -9,7 +9,7 @@ class Account:
         self.id: str = "O" + str(uuid4())
         self.user_id: str = user_id
         self.amount: str = 0
-        self.iban: str = generate_iban()
+        self.iban: str = iban_generator()
         self.open_at: datetime = datetime.now()
 
     def to_dict(self) -> dict:
