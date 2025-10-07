@@ -2,6 +2,8 @@ from datetime import datetime
 from fastapi import APIRouter
 from uuid import uuid4
 from passlib.context import CryptContext
+from Class.CurrentAccount import CurrentAccount 
+from Class.Account import accounts
 
 router = APIRouter()
 
@@ -28,6 +30,7 @@ users: list[User] = []
 def register_user(first_name: str, last_name: str, email: str, password: str) -> User:
     new_user = User(first_name, last_name, email, password)
     users.append(new_user)
+    accounts.append(CurrentAccount(new_user.id))
 
 @router.post('/register')
 def register(first_name: str, last_name: str, email: str, password: str):

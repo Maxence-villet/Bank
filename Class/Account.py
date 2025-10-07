@@ -12,14 +12,14 @@ class Account:
     open_at: datetime
 
     def __init__(self, user_id: str):
-        self.id = str(uuid4())
+        self.id = "O" + str(uuid4())
         self.user_id = user_id
         self.amount = 0
         self.iban = generate_iban()
         self.open_at = datetime.now()
 
 accounts: list[Account] = []
-daily_deposit: dict[str, float] = {}
+daily_deposit: dict[str, int] = {}
 
 def generate_iban() -> str:
     unique_id = uuid4().int >> 64
@@ -28,13 +28,15 @@ def generate_iban() -> str:
 def get_number_of_accounts(user_id: str) -> int:
     return len([account for account in accounts if account.user_id == user_id])
 
-def close_account(account_id: str) -> bool:
+def close_account(account_id: str) -> str:
     global accounts
     for account in accounts:
         if account.id == account_id:
+            if account.id[0] == 'C':
+                return ("message:", "Cannot close a current account.", 403)
             accounts.remove(account)
-            return True
-    return False
+            return ("message:", "Account closed successfully.", 200)
+    return ("error:", "Account not found.", 404)
 
 def open_account(user_id: str) -> Account:
     global accounts
@@ -97,10 +99,8 @@ def api_get_all_accounts():
 
 @router.delete("/close_account/{account_id}")
 def api_close_account(account_id: str):
-    success = close_account(account_id)
-    if success:
-        return {"message": "Account closed successfully."}
-    return {"error": "Account not found."}
+    message: str = close_account(account_id)
+    return {message}
 
 @router.get("/daily_deposit/{account_id}")
 def api_get_daily_deposit(account_id: str):
