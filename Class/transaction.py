@@ -1,3 +1,5 @@
+from datetime import datetime
+from uuid import uuid4
 
 class transaction:
      
@@ -5,6 +7,8 @@ class transaction:
          self.sender_id = sender_id
          self.receiver_id = receiver_id
          self.amount = amount
+         self.uuid_transaction = str(uuid4())
+         self.executed_at = datetime.now()
 
      def execute(self):
         if user[self.sender_id]["balance"] < self.amount:
