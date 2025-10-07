@@ -7,19 +7,16 @@ class transaction:
          self.amount = amount
 
      def execute(self):
-         if user[self.sender_id]["balance"] >= self.amount:
-
-             user[self.sender_id]["balance"] -= self.amount
-             user[self.receiver_id]["balance"] += self.amount
-             return True
-         else:
-             return False
-     def __str__(self):
-         return f"Transaction from {user[self.sender_id]['username']} to {user[self.receiver_id]['username']} of amount {self.amount}"
+        if user[self.sender_id]["balance"] < self.amount:
+            print(f"Transaction from {user[self.sender_id]['username']} to {user[self.receiver_id]['username']} of amount {self.amount} have been failed")
+            return False
+        
+        user[self.sender_id]["balance"] -= self.amount
+        user[self.receiver_id]["balance"] += self.amount
+        print(f"Transaction from {user[self.sender_id]['username']} to {user[self.receiver_id]['username']} of amount {self.amount} have been executed successfully")
+        return True
+        
          
-t1 = transaction(1, 2, 50)
-t2 = transaction(2, 1, 30)
-
 if __name__ == "__main__":
     user:dict =\
   {
@@ -32,9 +29,11 @@ if __name__ == "__main__":
      "balance":100
      }
  }
+    
+    t1 = transaction(1, 2, 500)
+    t2 = transaction(2, 1, 50)
 
     t1.execute()
     t2.execute()
-    print(t1)
-    print(t2)
-    print(user[1]["balance"] )
+    
+
