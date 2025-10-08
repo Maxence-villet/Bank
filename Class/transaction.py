@@ -18,7 +18,6 @@ class Transaction:
     def mark_failed(self):
         object.__setattr__(self, 'failed_at', datetime.now())
 
-
 # Example usage:
 if __name__ == "__main__":
     transaction = Transaction(sender_id="user123", receiver_id="user456", amount=100.0)
