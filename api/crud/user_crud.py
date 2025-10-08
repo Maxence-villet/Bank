@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import uuid4
 from typing import Optional
 from models.user import User
-from crud.account_crud import accounts
+from api.crud.account_crud import accounts
 from models.current_account import CurrentAccount
 
 # Fake data storage using lists
