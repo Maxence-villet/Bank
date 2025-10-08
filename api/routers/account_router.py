@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-from typing import List
-from services.account_service import (
+from crud.account_crud import (
     open_account,
     get_accounts,
     get_account_by_id,
@@ -40,4 +39,3 @@ async def api_deposit(account_id: str, amount: int):
 async def api_get_daily_deposit(account_id: str):
     amount = get_daily_deposit(account_id)
     return {"daily_deposit": amount}
-

@@ -1,16 +1,21 @@
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Union
 from models.account import Account
 from models.current_account import CurrentAccount
+from models.deposit import DepositService
 
+# Fake data storage using lists and dictionaries
 accounts: list[Account] = []
 daily_deposits: dict[str, int] = {}
+
+# Service pour gérer les dépôts
+deposit_service = DepositService(daily_deposits, accounts)
 
 def get_number_of_accounts(user_id: str) -> int:
     accounts_number = 0
     for account in accounts:
         if account.user_id == user_id:
             accounts_number += 1
-    
+
     return accounts_number
 
 def close_account(account_id: str) -> dict:
@@ -46,47 +51,35 @@ def get_accounts(user_id: str) -> list[Account]:
         return []
     else:
         return accounts_by_user_id
-    
+
 def get_all_accounts() -> list[Account]:
     return accounts
 
-def get_account_by_id(account_id: str) -> Account | None:
+def get_account_by_id(account_id: str) -> Optional[Account]:
     for account in accounts:
         if account.id == account_id:
             return account
     return None
 
 def get_daily_deposit(account_id: str) -> int:
-    return daily_deposits.get(account_id, 0)
+    return deposit_service.get_daily_deposit(account_id)
 
-def get_account_balance(account_id: str) -> int | None:
-    accounts = get_account_by_id(account_id)
-    if accounts is None:
+def get_account_balance(account_id: str) -> Optional[int]:
+    account = get_account_by_id(account_id)
+    if account is None:
         return None
-    else: 
-        return accounts.amount
+    else:
+        return account.amount
 
 def deposit_money(account_id: str, amount: int) -> dict:
-    global daily_deposits
+    # Valider le dépôt
+    validation_error = deposit_service.validate_deposit(account_id, amount)
+    if validation_error:
+        return {"error": validation_error, "status_code": 403}
 
-    if amount < 1:
-        return {"error": "Deposit failed. Amount is too low.", "status_code": 403}
-    
-    current_balance = get_account_balance(account_id)
-    my_deposit = get_daily_deposit(account_id)
-    
-    if my_deposit + amount > 200000:
-        return {"error": f"Deposit failed. Amount is too high. Maximum deposit per day is 2000€.", "status_code": 403}
-    
-    if account_id in daily_deposits:
-        daily_deposits[account_id] += amount
-    else: 
-        daily_deposits[account_id] = amount
-    
-    for account in accounts:
-        if account.id == account_id:
-            account.amount += amount
-            return {"message": "Deposit successful.", "status_code": 200}
-    
-    return {"error": "Account not found.", "status_code": 404}
-
+    # Exécuter le dépôt
+    success = deposit_service.execute_deposit(account_id, amount)
+    if success:
+        return {"message": "Deposit successful.", "status_code": 200}
+    else:
+        return {"error": "Deposit failed. Account not found.", "status_code": 404}
