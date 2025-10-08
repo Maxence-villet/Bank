@@ -1,43 +1,27 @@
+from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import uuid4
 
-class transaction:
-     
-     def __init__(self, sender_id, receiver_id, amount):
-         self.sender_id = sender_id
-         self.receiver_id = receiver_id
-         self.amount = amount
-         self.uuid_transaction = str(uuid4())
-         self.executed_at = datetime.now()
+@dataclass(frozen=True)
+class Transaction:
+    sender_id: str
+    receiver_id: str
+    amount: float
+    uuid_transaction: str = field(default_factory=lambda: str(uuid4()))
+    pending_at: datetime = field(default_factory=datetime.now)
+    completed_at: datetime = None
+    failed_at: datetime = None
 
-     def execute(self):
-        if user[self.sender_id]["balance"] < self.amount:
-            print(f"Transaction from {user[self.sender_id]['username']} to {user[self.receiver_id]['username']} of amount {self.amount} have been failed")
-            return False
-        
-        user[self.sender_id]["balance"] -= self.amount
-        user[self.receiver_id]["balance"] += self.amount
-        print(f"Transaction from {user[self.sender_id]['username']} to {user[self.receiver_id]['username']} of amount {self.amount} have been executed successfully")
-        return True
-        
-         
+    def mark_completed(self):
+        object.__setattr__(self, 'completed_at', datetime.now())
+
+    def mark_failed(self):
+        object.__setattr__(self, 'failed_at', datetime.now())
+
+
+# Example usage:
 if __name__ == "__main__":
-    user:dict =\
-  {
-     1:{
-     "username":"Alice",
-     "balance":100
-     },
-     2:{
-     "username":"Bob",
-     "balance":100
-     }
- }
-    
-    t1 = transaction(1, 2, 500)
-    t2 = transaction(2, 1, 50)
-
-    t1.execute()
-    t2.execute()
-    
+    transaction = Transaction(sender_id="user123", receiver_id="user456", amount=100.0)
+    transaction.mark_completed()
+    print(transaction)
 
