@@ -7,6 +7,7 @@ from api.routers.current_account_router import router as current_account_router
 from api.routers.auth import router as auth_router
 from api.routers.beneficiary_router import router as beneficiary_router
 from api.routers.transaction_router import router as transaction_router
+from api.routers.deposit_router import router as deposit_router
 
 from db.database import create_db_and_tables
 
