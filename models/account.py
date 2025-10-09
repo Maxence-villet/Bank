@@ -1,29 +1,20 @@
 from datetime import datetime
 from uuid import uuid4
+
+from sqlmodel import Field, SQLModel
 from utils.iban_generator import iban_generator
 from models.beneficiary import Beneficiary
 from typing import List
 
-class Account:
-
+class Account(SQLModel, table=True):
+    id: str | None = Field(default="O" + str(uuid4()), primary_key=True)
+    user_id: str = Field(foreign_key="user.id")
+    amount: int = Field(default=0)
+    iban: str = Field(default=iban_generator())
+    open_at: datetime = Field(default=datetime.now)
 
     def __init__(self, user_id: str):
-        self.id: str = "O" + str(uuid4())
         self.user_id: str = user_id
-        self.amount: str = 0
-        self.iban: str = iban_generator()
-        self.open_at: datetime = datetime.now()
-        self.beneficiaries: List[Beneficiary] = []
-
-    def to_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "user_id": self.user_id,
-            "amount": self.amount,
-            "iban": self.iban,
-            "open_at": self.open_at.isoformat(),
-            "beneficiaries": [beneficiary.to_dict() for beneficiary in self.beneficiaries]
-        }
     
     def __repr__(self) -> str:
         return f"Account(id={self.id}, user_id={self.user_id}, amount={self.amount}, iban={self.iban}, open_at={self.open_at})"
