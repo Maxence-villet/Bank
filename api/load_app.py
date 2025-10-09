@@ -4,6 +4,7 @@ from api.routers.user_router import router as user_router
 from api.routers.account_router import router as account_router
 from api.routers.current_account_router import router as current_account_router
 from api.routers.auth import router as auth_router
+from api.routers.beneficiary_router import router as beneficiary_router
 
 def load_app():
     app = FastAPI()
@@ -12,6 +13,7 @@ def load_app():
     app.include_router(account_router)
     app.include_router(current_account_router)
     app.include_router(auth_router)
+    app.include_router(beneficiary_router)
 
     origins = [
     "http://localhost",
