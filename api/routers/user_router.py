@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from crud.user_crud import register_user, get_users
+from api.crud.user_crud import register_user, get_users
 
 router = APIRouter(prefix="/users", tags=["users"])
 

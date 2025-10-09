@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from crud.account_crud import (
+from api.crud.account_crud import (
     open_account,
     get_accounts,
     get_account_by_id,
