@@ -42,7 +42,7 @@ python -m venv .venv
 
 source .venv/bin/activate
 
-pip install "fastapi[standard]"
+pip install -r requirement.txt
 
 # pour Lancer le serveur 
 
