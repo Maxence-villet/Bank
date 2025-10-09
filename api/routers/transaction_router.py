@@ -19,11 +19,11 @@ async def api_get_transaction_details(transaction_id: str):
     return transaction 
 
 @router.post("/create")
-async def api_create_transaction(transaction_id: str):
-    transaction = create_transaction(transaction_id)
+async def api_create_transaction(sender_id: str, receiver_id: str, amount: int):
+    transaction = create_transaction(sender_id, receiver_id, amount)
     return transaction
 
-@router.patch("/cancel/{transaction_id}", tags=["accounts"])
+@router.get("/cancel/{transaction_id}", tags=["accounts"])
 async def api_finalize(transaction_id : str):
     message = finalize_transaction(transaction_id, False)
     return message
