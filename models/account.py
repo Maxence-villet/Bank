@@ -7,17 +7,19 @@ from models.beneficiary import Beneficiary
 from typing import List
 
 class Account(SQLModel, table=True):
-    id: str | None = Field(default="O" + str(uuid4()), primary_key=True)
+    id: str = Field(default="O" + str(uuid4()), primary_key=True)
     user_id: str = Field(foreign_key="user.id")
     amount: int = Field(default=0)
     iban: str = Field(default=iban_generator())
     open_at: datetime = Field(default=datetime.now)
 
-    def __init__(self, user_id: str):
-        self.user_id: str = user_id
-    
-    def __repr__(self) -> str:
-        return f"Account(id={self.id}, user_id={self.user_id}, amount={self.amount}, iban={self.iban}, open_at={self.open_at})"
+    def __init__(self, user_id: str, id: str = "O" + str(uuid4())):
+        self.id = id
+        self.user_id = user_id
+        self.amount = 0
+        self.iban = iban_generator()
+        self.open_at = datetime.now()
+
 
     @property
     def is_current_account(self) -> bool:
