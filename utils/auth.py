@@ -1,13 +1,13 @@
 from datetime import datetime, timedelta, timezone
 import jwt
 from fastapi.security import OAuth2PasswordBearer
+from fastapi import Depends, HTTPException
+from typing import Optional
 
 ACCESS_TOKEN_SECRET_KEY = "WEvRjO6fnYKYpAu7jR8T41Tk93OyFvQ4rmmuQ7djuo7S2YQefabzrdoBhhfkwpvkmg3KFjIjnIXiq2xj6V3PlVMnMpV0FskbY17ofddm25cPfdH3rqcDq3KLsdxTL7C4bBvVuyQmCXKfGlBtHG8KakRrpNkNGHA6"
 ACCESS_TOKEN_ALGORITHM = "HS256"
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/token", auto_error=False)
-
-token = []
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -17,7 +17,6 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, ACCESS_TOKEN_SECRET_KEY, algorithm=ACCESS_TOKEN_ALGORITHM)
-    token.append(encoded_jwt)
     return encoded_jwt
 
 def decode_access_token(token: str):
@@ -29,16 +28,23 @@ def decode_access_token(token: str):
     except jwt.InvalidTokenError:
         return None
 
-def get_current_token():
-    global token
-    if not token:
-        return None
-    payload = decode_access_token(token[-1])
-    if payload is None:
-        return None
-    user_id: str = payload.get("sub")
-    return user_id
+def get_current_user(token: str = Depends(oauth2_scheme)) -> Optional[str]:
 
-def logout():
-    global token
-    token = []
+    credentials_exception = HTTPException(
+        status_code=401,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    if not token:
+        raise credentials_exception
+
+    payload = decode_access_token(token)
+    if payload is None:
+        raise credentials_exception
+
+    user_id: str = payload.get("sub")
+    if user_id is None:
+        raise credentials_exception
+
+    return user_id

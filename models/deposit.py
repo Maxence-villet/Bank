@@ -1,61 +1,19 @@
-from typing import Dict, List, Optional
-from models.account import Account
+from datetime import date
+from uuid import uuid4
+from sqlmodel import Field, SQLModel
 
-class DepositService:
-    MAX_DAILY_DEPOSIT: int = 200000  # 2000€ en centimes
 
-    def __init__(self, daily_deposits: Dict[str, int], accounts: List[Account]):
-        self.daily_deposits = daily_deposits
-        self.accounts = accounts
+class DailyDeposit(SQLModel, table=True):
 
-    def validate_deposit(self, account_id: str, amount: int) -> Optional[str]:
-        """
-        Valide si un dépôt peut être effectué.
-        Retourne un message d'erreur si invalide, None si valide.
-        """
-        if amount < 1:
-            return "Deposit failed. Amount is too low."
+    id: str = Field(default=str(uuid4()), primary_key=True) 
+    account_id: str = Field(foreign_key="account.id", index=True)
+    user_id: str = Field(foreign_key="user.id", index=True)
+    deposit_date: date = Field(default=date.today(), index=True)
+    deposited_amount: int = Field(default=0)
 
-        # Vérifier que le compte existe
-        account = self._find_account(account_id)
-        if account is None:
-            return "Account not found."
-
-        # Vérifier la limite journalière
-        current_daily_deposit = self.daily_deposits.get(account_id, 0)
-        if current_daily_deposit + amount > self.MAX_DAILY_DEPOSIT:
-            return f"Deposit failed. Amount is too high. Maximum deposit per day is {self.MAX_DAILY_DEPOSIT // 100}€."
-
-        return None  # Dépôt valide
-
-    def execute_deposit(self, account_id: str, amount: int) -> bool:
-        """
-        Exécute le dépôt d'argent.
-        Suppose que validate_deposit a été appelée et a retourné None.
-        """
-        account = self._find_account(account_id)
-        if account is None:
-            return False
-
-        # Créditer le compte
-        account.amount += amount
-
-        # Mettre à jour les dépôts journaliers
-        if account_id in self.daily_deposits:
-            self.daily_deposits[account_id] += amount
-        else:
-            self.daily_deposits[account_id] = amount
-
-        return True
-
-    def get_daily_deposit(self, account_id: str) -> int:
-        """Retourne le montant déposé aujourd'hui pour un compte."""
-        return self.daily_deposits.get(account_id, 0)
-
-    def _find_account(self, account_id: str) -> Optional[Account]:
-        """Trouve un compte par son ID."""
-        for account in self.accounts:
-            if account.id == account_id:
-                return account
-        return None
-        
+    def __init__(self, account_id: str, user_id: str, deposited_amount: int = 0):
+        self.id = str(uuid4())
+        self.account_id = account_id
+        self.user_id = user_id
+        self.deposited_amount = deposited_amount
+        self.deposit_date = date.today()

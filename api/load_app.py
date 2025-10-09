@@ -10,6 +10,7 @@ from api.routers.account_router import router as account_router
 from api.routers.current_account_router import router as current_account_router
 from api.routers.auth import router as auth_router
 from api.routers.beneficiary_router import router as beneficiary_router
+from api.routers.transaction_router import router as transaction_router
 from api.crud.scheduler import TransactionScheduler 
 from db.database import create_db_and_tables
 
@@ -25,6 +26,14 @@ async def check_transactions():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     create_db_and_tables()
+
+    app.include_router(user_router)
+    app.include_router(auth_router)
+    app.include_router(account_router)
+    app.include_router(current_account_router)
+    app.include_router(deposit_router)
+    app.include_router(beneficiary_router)
+    app.include_router(transaction_router)
     
     app_scheduler.add_job(
         check_transactions,

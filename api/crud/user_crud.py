@@ -1,6 +1,5 @@
 from typing import Optional
 from models.user import User
-from api.crud.account_crud import accounts, open_current_account
 from sqlmodel import Session, select
 from db.database import engine
 
@@ -19,6 +18,7 @@ def register_user(first_name: str, last_name: str, email: str, password: str) ->
         db.commit()
         db.refresh(new_user)
 
+        from api.crud.account_crud import open_current_account
         open_current_account(new_user.id)
 
         return {"message": "User registered successfully", "status_code": 200}

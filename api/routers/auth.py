@@ -1,21 +1,20 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
 from api.crud.auth import authenticate_user
-from utils.auth import get_current_token, logout
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/login")
-async def api_login_user(email: str, password: str):
-    result = authenticate_user(email, password)
-    return result
-
-@router.post("/logout")
-async def api_logout_user():
-    logout()
-    return {"message": "Successfully logged out"}
-
 @router.post("/token")
-async def api_token():
-    token = get_current_token()
-    return {"token": token}
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    """
+    OAuth2 compatible token login, get an access token for future requests
+    """
+    user = authenticate_user(form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return user
     

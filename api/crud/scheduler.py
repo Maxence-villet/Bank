@@ -3,7 +3,7 @@ from sqlmodel import Session, select
 from db.database import engine
 from models.transaction import TransactionModel
 from api.entities.transaction import Transaction
-from api.crud.transaction_crud import finalize_transaction
+from api.crud.transaction_action import finalize_transaction
 from api.entities.transaction_status import TransactionStatus
 
 class TransactionScheduler:

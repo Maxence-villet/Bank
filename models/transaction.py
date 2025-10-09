@@ -16,3 +16,4 @@ class TransactionModel(SQLModel, table=True):
     failed_at: Optional[datetime] = None
     cancelled_at: Optional[datetime] = None
     status: TransactionStatus = Field(default=TransactionStatus.pending, index=True)
+
