@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from crud.account_crud import open_current_account
+from api.crud.account_crud import open_current_account
 
 router = APIRouter(prefix="/current-accounts", tags=["current-accounts"])
 

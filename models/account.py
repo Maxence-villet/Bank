@@ -1,6 +1,8 @@
 from datetime import datetime
 from uuid import uuid4
 from utils.iban_generator import iban_generator
+from models.beneficiary import Beneficiary
+from typing import List
 
 class Account:
 
@@ -11,6 +13,7 @@ class Account:
         self.amount: str = 0
         self.iban: str = iban_generator()
         self.open_at: datetime = datetime.now()
+        self.beneficiaries: List[Beneficiary] = []
 
     def to_dict(self) -> dict:
         return {
@@ -18,7 +21,8 @@ class Account:
             "user_id": self.user_id,
             "amount": self.amount,
             "iban": self.iban,
-            "open_at": self.open_at.isoformat()
+            "open_at": self.open_at.isoformat(),
+            "beneficiaries": [beneficiary.to_dict() for beneficiary in self.beneficiaries]
         }
     
     def __repr__(self) -> str:
