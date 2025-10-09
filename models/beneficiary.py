@@ -1,27 +1,21 @@
 from uuid import uuid4
 from datetime import datetime
+from sqlmodel import Field, SQLModel
 
-class Beneficiary:
-    def __init__(self, account_id: str, first_name: str, last_name: str, iban: str, user_id: str):
-        self.id = str(uuid4())
-        self.account_id = account_id  # Compte propriétaire du bénéficiaire
+class Beneficiary(SQLModel, table=True):
+    id: str | None = Field(default=str(uuid4()), primary_key=True)
+    source_user_id: str = Field(default=str(uuid4()), primary_key=True, foreign_key="user.id")
+    first_name: str = Field(index=True)
+    last_name: str = Field(index=True)
+    iban: str = Field(index=True)
+    destination_account_id: str = Field(index=True, foreign_key="account.id")
+    register_at: datetime = Field(default=datetime.now)
+
+    def __init__(self, soruce_user_id: str, first_name: str, last_name: str, iban: str, destination_account_id: str):
+        self.source_user_id = soruce_user_id
         self.first_name = first_name
         self.last_name = last_name
         self.iban = iban
-        self.user_id = user_id
+        self.destination_account_id = destination_account_id
         self.register_at = datetime.now()
-
-    def to_dict(self) -> dict:
-        return {
-            "id": self.id,
-            "account_id": self.account_id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "iban": self.iban,
-            "register_at": self.register_at.isoformat()
-        }
-
-    def __repr__(self) -> str:
-        return f"beneficiary(id={self.id}, account_id={self.account_id}, first_name={self.first_name}, last_name={self.last_name}, iban={self.iban})"
-
     
