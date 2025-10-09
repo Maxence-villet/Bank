@@ -78,7 +78,7 @@ def finalize_transaction( uuid_transaction: str, confirmed: bool):
 
     return tx_entity
 
-def  get_transactions(account_id: str) -> List[Transaction]:
+def  get_transactions(account_id: str) -> List[TransactionBaseModel]:
     with Session(engine) as session:
         statement = select(TransactionModel).where(
             (TransactionModel.sender_id == account_id) | (TransactionModel.receiver_id == account_id)
@@ -98,11 +98,23 @@ def  get_transactions(account_id: str) -> List[Transaction]:
         return transactions
 
 
-def get_transaction_details(transaction_id: str) -> Transaction:
+def get_transaction_details(transaction_id: str) -> Transaction | dict:
     with Session(engine) as session:
         statement = select(TransactionModel).where(TransactionModel.uuid_transaction == transaction_id)
-        tx_model = session.exec(statement).all()
-        if tx_model is None or len(tx_model) == 0:
+        tx_model = session.exec(statement).first()
+        if tx_model is None:
             return {"message": "La transaction recherchée n'est pas présente", "status_error": 404}
 
-        return tx_model[0]
+        tx_entity = Transaction(
+            sender_id=tx_model.sender_id,
+            receiver_id=tx_model.receiver_id,
+            amount=tx_model.amount,
+            uuid_transaction=tx_model.uuid_transaction,
+            pending_at=tx_model.pending_at,
+            completed_at=tx_model.completed_at,
+            failed_at=tx_model.failed_at,
+            cancelled_at=tx_model.cancelled_at,
+            status=tx_model.status,
+        )
+
+        return tx_entity

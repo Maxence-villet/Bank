@@ -7,10 +7,11 @@ from api.crud.transaction_action import (
     get_transaction_details
 )
 from api.entities.transaction import Transaction
+from api.shemas.transaction_model import TransactionBaseModel
 
 router = APIRouter(prefix="/transaction", tags=["Transaction"])
 
-@router.get("/by_account/{account_id}", response_model=List[Transaction])
+@router.get("/by_account/{account_id}", response_model=List[TransactionBaseModel])
 async def api_get_transactions(account_id: str):
     print(f"[DEBUG] account_id reçu : {account_id}")
     transactions = get_transactions(account_id)
