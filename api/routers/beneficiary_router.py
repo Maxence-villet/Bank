@@ -23,9 +23,9 @@ async def api_get_beneficiary(beneficiary_id: str):
     beneficiary = get_beneficiary(beneficiary_id)
     return beneficiary
 
-@router.delete("/source_user_id/{source_usser_id}/beneficiary/{beneficiary_id}/destination_account_id/{destination_account_id}")
-async def api_remove_beneficiary(source_user_id: str, beneficiary_id: str, destination_account_id: str):
-    message = remove_beneficiary(source_user_id, beneficiary_id, destination_account_id)
+@router.delete("/beneficiary/{beneficiary_id}")
+async def api_remove_beneficiary(beneficiary_id: str):
+    message = remove_beneficiary(beneficiary_id)
     return message
 
 
