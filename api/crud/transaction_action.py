@@ -136,9 +136,9 @@ def create_welcome_bonus(account_id: str, user_name: str) -> bool:
         welcome_tx = Transaction(
             sender_id="SYSTEM_BANK",  # Compte système
             receiver_id=account_id,
-            amount=20000,  # 200€ en centimes
+            amount=10000,  # 100€ en centimes
             uuid_transaction=str(uuid4()),
-            description=f"🎉 Bienvenue {user_name} ! Cadeau de bienvenue de 200€ pour commencer votre aventure bancaire."
+            description=f"🎉 Bienvenue {user_name} ! Cadeau de bienvenue de 100€ pour commencer votre aventure bancaire."
         )
 
         with Session(engine) as db:
@@ -154,7 +154,7 @@ def create_welcome_bonus(account_id: str, user_name: str) -> bool:
             # Créditer le compte destinataire
             account = db.get(Account, account_id)
             if account:
-                account.amount += 20000  # 200€ en centimes
+                account.amount += 10000  # 100€ en centimes
                 db.add(account)
 
             db.commit()

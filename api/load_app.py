@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
     # Démarrage du scheduler APScheduler
     app_scheduler.add_job(
         check_transactions,
-        IntervalTrigger(seconds=3),
+        IntervalTrigger(seconds=5),
         id="transaction_check_job",
         replace_existing=True
     )
