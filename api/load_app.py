@@ -7,13 +7,12 @@ from api.routers.current_account_router import router as current_account_router
 from api.routers.auth import router as auth_router
 from api.routers.beneficiary_router import router as beneficiary_router
 
-from db.database import Base, engine
-from models.user import User
+from db.database import create_db_and_tables
 
 def load_app():
     app = FastAPI()
 
-    Base.metadata.create_all(bind=engine)
+    create_db_and_tables()
 
     app.include_router(user_router)
     app.include_router(account_router)

@@ -3,5 +3,3 @@ sqlmodel
 bcrypt==4.3.0
 passlib
 pyjwt
-pydantic
-sqlalchemy
