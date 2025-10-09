@@ -16,9 +16,10 @@ def load_app():
     create_db_and_tables()
 
     app.include_router(user_router)
+    app.include_router(auth_router)
     app.include_router(account_router)
     app.include_router(current_account_router)
-    app.include_router(auth_router)
+    app.include_router(deposit_router)
     app.include_router(beneficiary_router)
     app.include_router(transaction_router)
 

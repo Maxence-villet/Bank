@@ -23,10 +23,9 @@ async def api_create_transaction(transaction_id: str):
     transaction = create_transaction(transaction_id)
     return transaction
 
-@router.patch("/finalize/{transaction_id}", tags=["accounts"])
+@router.patch("/cancel/{transaction_id}", tags=["accounts"])
 async def api_finalize(transaction_id : str):
-    transaction = get_transaction_details(transaction_id)
-    message = finalize_transaction(transaction, False)
+    message = finalize_transaction(transaction_id, False)
     return message
 
 

@@ -1,6 +1,6 @@
 from models.beneficiary import Beneficiary
 from typing import List, Optional
-from api.crud.account_crud import get_accounts, get_account_by_id
+from api.crud.account_crud import get_account_by_id, get_accounts
 from api.crud.user_crud import get_user_by_id
 from sqlmodel import Session, select
 from db.database import engine
@@ -29,10 +29,12 @@ def add_beneficiary(source_user_id: str, destination_account_id: str, first_name
         if existing_beneficiary:
             return {"error": "beneficiary already exists for this account", "status_code": 403}
 
-        if account.id == destination_account_id:
-            return {"error": "Your account cannot be a self beneficiary", "status_code": 403}
-        if account.iban == iban:
-            return {"error": "Your account cannot be a self beneficiary", "status_code": 403}
+        source_accounts = get_accounts(source_user_id)
+        for account in source_accounts:
+            if account.id == destination_account_id:
+                return {"error": "Your account cannot be a self beneficiary", "status_code": 403}
+            if account.iban == iban:
+                return {"error": "Your account cannot be a self beneficiary", "status_code": 403}
 
         new_beneficiary = Beneficiary(
             source_user_id=source_user_id,
@@ -59,16 +61,20 @@ def get_beneficiaries_by_user(source_user_id: str) -> List[Beneficiary]:
 
 def get_beneficiary(beneficiary_id: str) -> Optional[Beneficiary]:
     with Session(engine) as db:
-        statement = select(Beneficiary).where(Beneficiary.id == id)
-        beneficiary = db.exec(statement).fisrt()
-        return beneficiary
+        statement = select(Beneficiary).where(Beneficiary.id == beneficiary_id)
+        beneficiary = db.exec(statement).first()
+        if beneficiary is None:
+            return None
+        else:
+            return beneficiary
 
-def remove_beneficiary(source_user_id: str, beneficiary_id: str, destination_account_id: str) -> dict:
+def remove_beneficiary(beneficiary_id: str) -> dict:
+    if get_beneficiary(beneficiary_id) is None:
+        return {"error": "beneficiary not found", "status_code": 404}
+    
     with Session(engine) as db:
         statement = select(Beneficiary).where(
-            Beneficiary.id == beneficiary_id,
-            Beneficiary.source_user_id == source_user_id,
-            Beneficiary.destination_account_id == destination_account_id
+            Beneficiary.id == beneficiary_id
         )
         beneficiary = db.exec(statement).first()
 

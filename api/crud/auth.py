@@ -5,11 +5,11 @@ from utils.auth import create_access_token
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def authenticate_user(email: str, password: str) -> bool:
+def authenticate_user(email: str, password: str):
     user = get_user_by_email(email)
     if not user or not pwd_context.verify(password, user.password):
         return False
-        
+
     access_token_expires = timedelta(minutes=60)
     access_token = create_access_token(
         data={"sub": user.id}, expires_delta=access_token_expires

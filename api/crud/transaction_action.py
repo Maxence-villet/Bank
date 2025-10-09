@@ -1,14 +1,20 @@
 from api.entities.transaction import Transaction
 from models.account import Account
+from models.transaction import *
 from api.entities.transaction_status import TransactionStatus
-from api.crud.account_crud import get_account_by_id, get_account_balance, deposit_money
+from api.crud.account_crud import get_account_by_id, get_account_balance
 from sqlmodel import Session, select
 from typing import List
 from uuid import uuid4
+from db.database import engine
+from api.entities.transaction import mark_cancelled
 
-def create_transaction(session: Session, sender_id: str, receiver_id: str, amount: float) -> Transaction:
+def create_transaction(sender_id: str, receiver_id: str, amount: int) -> Transaction:
     if not amount.is_integer():
         raise ValueError("Le montant doit être un entier.")
+    
+    if amount <= 0:
+        raise ValueError("Le montant doit être positif.")
 
     if get_account_by_id(sender_id) is None:
         raise ValueError(f"L'utilisateur {sender_id} n'existe pas.")
@@ -16,67 +22,55 @@ def create_transaction(session: Session, sender_id: str, receiver_id: str, amoun
     if get_account_by_id(receiver_id) is None:
         raise ValueError(f"L'utilisateur {receiver_id} n'existe pas.")
 
-    if amount <= 0:
-        raise ValueError("Le montant doit être positif.")
-
     balance = get_account_balance(sender_id)
     if balance is None or balance < int(amount):
         raise ValueError("Fonds insuffisants.")
 
-    deposit_result = deposit_money(sender_id, -int(amount))
-    if deposit_result.get("status_code") != 200:
-        raise ValueError(f"Échec du débit : {deposit_result.get('error')}")
-
     tx = Transaction(sender_id=sender_id, receiver_id=receiver_id, amount=amount, uuid_transaction=str(uuid4()))
     
-    print(f"{amount}€ réservés sur le compte de {sender_id}")
-    return tx
+    return {f"message":tx, "status_code": 200}
 
-def finalize_transaction(session: Session, tx: Transaction, confirmed: bool):
-    if not tx.check_pending():
-        raise ValueError(f"La transaction {tx.uuid_transaction} est déjà finalisée.")
 
-    if get_account_by_id(tx.receiver_id) is None:
-        raise ValueError(f"L'utilisateur destinataire {tx.receiver_id} n'existe pas.")
+
+def finalize_transaction(session: Session, uuid_transaction: str, confirmed: bool):
+
+    statement = select(TransactionModel).where(TransactionModel.uuid_transaction == uuid_transaction)
+    tx_model = session.exec(statement).scalar_one_or_none()
+
+    if tx_model is None:
+        raise ValueError(f"Aucune transaction trouvée avec l'UUID {uuid_transaction}.")
+
+    if tx_model.status != TransactionStatus.pending:
+        raise ValueError(f"La transaction {uuid_transaction} est déjà finalisée.")
+
+    tx_entity = Transaction(
+        sender_id=tx_model.sender_id,
+        receiver_id=tx_model.receiver_id,
+        amount=tx_model.amount,
+        uuid_transaction=tx_model.uuid_transaction,
+        pending_at=tx_model.pending_at,
+        completed_at=tx_model.completed_at,
+        failed_at=tx_model.failed_at,
+        cancelled_at=tx_model.cancelled_at,
+        status=tx_model.status,
+    )
 
     if confirmed:
-        receiver = session.exec(select(Account).where(Account.id == tx.receiver_id)).first()
-        if not receiver:
-            raise ValueError(f"L'utilisateur destinataire {tx.receiver_id} n'existe pas.")
-        receiver.amount += tx.amount
-        session.add(receiver)
-        tx.mark_completed()
-        print(f"Transaction {tx.uuid_transaction} confirmée et exécutée.")
+        tx_entity.mark_completed()
     else:
-        if get_account_by_id(tx.sender_id) is None:
-            raise ValueError(f"L'utilisateur expéditeur {tx.sender_id} n'existe pas.")
+        tx_entity.mark_cancelled()
 
-        sender = session.exec(select(Account).where(Account.id == tx.sender_id)).first()
-        if not sender:
-            raise ValueError(f"L'utilisateur expéditeur {tx.sender_id} n'existe pas.")
-        sender.amount += tx.amount
-        session.add(sender)
-        tx.mark_cancelled()
-        print(f"Transaction {tx.uuid_transaction} annulée et remboursée.")
-    
+    tx_model.status = tx_entity.status
+    tx_model.completed_at = tx_entity.completed_at
+    tx_model.failed_at = tx_entity.failed_at
+    tx_model.cancelled_at = tx_entity.cancelled_at
+
+    session.add(tx_model)
     session.commit()
 
-def get_transactions(session: Session, account_id: str, transactions: List[Transaction]) -> List[Transaction]:
+    return tx_entity
 
-    if get_account_by_id(account_id) is None:
-        raise ValueError(f"L'utilisateur {account_id} n'existe pas.")
-
-
-    transaction_history = [
-        tx for tx in transactions
-        if tx.receiver_id == account_id or tx.sender_id == account_id
-    ]
-    
-    if not transaction_history:
-        raise ValueError(f"Il n'y a aucune transaction liée au compte {account_id}")
-    
-    return transaction_history
-
+ 
 def get_transaction_details(session: Session, transaction_id: str, transactions: List[Transaction]) -> Transaction:
 
     for tx in transactions:
