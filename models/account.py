@@ -7,13 +7,15 @@ from models.beneficiary import Beneficiary
 from typing import List
 
 class Account(SQLModel, table=True):
-    id: str = Field(default="O" + str(uuid4()), primary_key=True)
+    id: str = Field(default_factory="O" + str(uuid4()), primary_key=True)
     user_id: str = Field(foreign_key="user.id")
     amount: int = Field(default=0)
     iban: str = Field(default=iban_generator())
     open_at: datetime = Field(default=datetime.now)
 
-    def __init__(self, user_id: str, id: str = "O" + str(uuid4())):
+    def __init__(self, user_id: str, id: str = None):
+        if id is None:
+            id = "O" + str(uuid4())
         self.id = id
         self.user_id = user_id
         self.amount = 0

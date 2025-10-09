@@ -1,17 +1,9 @@
 from typing import List, Dict, Optional, Union
 from models.account import Account
 from models.current_account import CurrentAccount
-from models.deposit import DepositService
 from api.crud.user_crud import get_user_by_id
 from sqlmodel import Session, select
 from db.database import engine
-
-# Fake data storage using lists and dictionaries
-accounts: list[Account] = []
-daily_deposits: dict[str, int] = {}
-
-# Service pour gérer les dépôts
-deposit_service = DepositService(daily_deposits, accounts)
 
 def get_number_of_accounts(user_id: str) -> int:
     with Session(engine) as db:
@@ -82,26 +74,3 @@ def get_account_by_id(account_id: str) -> Optional[Account]:
             return None
         else:
             return account
-
-def get_daily_deposit(account_id: str) -> int:
-    return deposit_service.get_daily_deposit(account_id)
-
-def get_account_balance(account_id: str) -> Optional[int]:
-    account = get_account_by_id(account_id)
-    if account is None:
-        return None
-    else:
-        return account.amount
-
-def deposit_money(account_id: str, amount: int) -> dict:
-    # Valider le dépôt
-    validation_error = deposit_service.validate_deposit(account_id, amount)
-    if validation_error:
-        return {"error": validation_error, "status_code": 403}
-
-    # Exécuter le dépôt
-    success = deposit_service.execute_deposit(account_id, amount)
-    if success:
-        return {"message": "Deposit successful.", "status_code": 200}
-    else:
-        return {"error": "Deposit failed. Account not found.", "status_code": 404}
