@@ -74,3 +74,9 @@ def get_account_by_id(account_id: str) -> Optional[Account]:
             return None
         else:
             return account
+
+def is_account_owner(account_id: str, user_id: str) -> bool:
+    account = get_account_by_id(account_id)
+    if account is None:
+        return False
+    return account.user_id == user_id

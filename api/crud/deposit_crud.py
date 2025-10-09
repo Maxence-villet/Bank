@@ -1,9 +1,9 @@
 from datetime import date
 from api.crud.account_crud import get_account_by_id
 from models.deposit import DailyDeposit
-from models.account import Account
 from sqlmodel import Session, select
 from db.database import engine
+from api.crud.account_crud import is_account_owner
 
 def create_daily_deposit(account_id: str, user_id: str, amount: int):
     if amount < 1 or amount > 200000:
@@ -27,6 +27,8 @@ def get_daily_deposit(account_id: str):
         return 0
     
 def add_to_daily_deposit(account_id: str, user_id:str, amount: int):
+    if not is_account_owner(account_id, user_id):
+        return {"error": "Unauthorized: You do not own this account.", "status_code": 401}
     dayli_deposit = get_daily_deposit(account_id)
 
     if dayli_deposit + amount > 200000:
