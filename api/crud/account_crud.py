@@ -89,4 +89,13 @@ def get_account_by_iban(iban: str) -> Optional[Account]:
             return None
         else:
             return account
-    
+
+def get_current_account(user_id: str) -> Optional[Account]:
+    """Récupère le compte courant (principal) d'un utilisateur."""
+    with Session(engine) as db:
+        statement = select(Account).where(
+            (Account.user_id == user_id) & (Account.id.like("C%"))
+        )
+        account = db.exec(statement).first()
+        return account
+

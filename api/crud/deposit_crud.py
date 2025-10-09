@@ -69,9 +69,22 @@ def deposit_money(account_id: str, amount: int):
         return {"error": "Account not found.", "status_code": 404}
     if amount < 1:
         return {"error": "Deposit amount must be positive.", "status_code": 400}
-    account.amount += amount
-    with Session(engine) as db:
-        db.add(account)
-        db.commit()
-        db.refresh(account)
+
+    # Créer une transaction de dépôt
+    from api.crud.transaction_action import create_transaction
+    deposit_description = f"💰 Dépôt de {amount} centimes ({amount/100:.2f}€) sur votre compte."
+
+    result = create_transaction("SYSTEM_BANK", account_id, amount, deposit_description)
+    if "error" in result:
+        return result
+
+    # Récupérer l'UUID de la transaction créée et la finaliser
+    from api.crud.transaction_action import finalize_transaction
+    from api.entities.transaction_status import TransactionStatus
+    transaction_uuid = result["message"].uuid_transaction
+    finalized = finalize_transaction(transaction_uuid, confirmed=True)
+
+    if hasattr(finalized, 'status') and finalized.status == TransactionStatus.completed:
         return {"message": "Deposit successful.", "status_code": 200}
+    else:
+        return {"error": "Failed to process deposit transaction.", "status_code": 500}

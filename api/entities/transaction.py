@@ -15,6 +15,7 @@ class Transaction:
     failed_at: Optional[datetime] = None
     cancelled_at: Optional[datetime] = None
     status: TransactionStatus = field(default=TransactionStatus.pending)
+    description: Optional[str] = ""
 
     def check_pending(self) -> bool:
         return self.status == TransactionStatus.pending

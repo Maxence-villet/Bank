@@ -3,10 +3,11 @@ from datetime import datetime
 from typing import Optional
 
 class TransactionBaseModel(BaseModel):
-    uuid_transaction: str 
+    uuid_transaction: str
     sender_id: str
     receiver_id: str
     amount: int
+    description: Optional[str] = ""
 
 class TransactionReadModel(TransactionBaseModel):
     uuid_transaction: str

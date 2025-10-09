@@ -18,8 +18,17 @@ def register_user(first_name: str, last_name: str, email: str, password: str) ->
         db.commit()
         db.refresh(new_user)
 
-        from api.crud.account_crud import open_current_account
-        open_current_account(new_user.id)
+        from api.crud.account_crud import open_current_account, get_current_account
+        account_result = open_current_account(new_user.id)
+
+        # Créer le bonus de bienvenue si le compte a été créé avec succès
+        if account_result.get("status_code") == 200:
+            # Récupérer l'ID du compte créé
+            current_account = get_current_account(new_user.id)
+            if current_account:
+                from api.crud.transaction_action import create_welcome_bonus
+                user_full_name = f"{new_user.first_name} {new_user.last_name}"
+                create_welcome_bonus(current_account.id, user_full_name)
 
         return {"message": "User registered successfully", "status_code": 200}
 
