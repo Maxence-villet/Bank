@@ -80,3 +80,13 @@ def is_account_owner(account_id: str, user_id: str) -> bool:
     if account is None:
         return False
     return account.user_id == user_id
+
+def get_account_by_iban(iban: str) -> Optional[Account]:
+    with Session(engine) as db:
+        statement = select(Account).where(Account.iban == iban)
+        account = db.exec(statement).first()
+        if account is None:
+            return None
+        else:
+            return account
+    
