@@ -11,7 +11,7 @@ class TransactionScheduler:
         self.delay = delay  
 
     async def check_pending_transactions(self):
-   
+
         now = datetime.now()
         threshold = now - timedelta(seconds=self.delay)
 
@@ -38,4 +38,4 @@ class TransactionScheduler:
                     cancelled_at=tx_model.cancelled_at,
                 )
 
-                finalize_transaction(tx_entity, confirmed=True)
+                finalize_transaction(tx_entity.uuid_transaction, confirmed=True)
