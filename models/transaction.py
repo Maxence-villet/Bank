@@ -15,7 +15,6 @@ class Transaction:
     cancelled_at: Optional[datetime] = None
 
     def __post_init__(self):
-        """Validation des données à la création."""
         if not self.sender_id or not self.receiver_id:
             raise ValueError("Les IDs de l'expéditeur et du destinataire doivent être non vides.")
         if not isinstance(self.amount, int):

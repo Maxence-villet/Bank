@@ -2,7 +2,7 @@ import time
 import threading
 import asyncio
 from datetime import datetime
-from transaction import Transaction
+from Bank.models.transaction import Transaction
 
 # --- Gestion de l’exécution différée ---
 class TransactionScheduler:

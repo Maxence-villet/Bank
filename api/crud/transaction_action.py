@@ -1,4 +1,4 @@
-from transaction import Transaction
+from models.transaction import Transaction
 from typing import Dict, List
 
 class TransactionAction:
@@ -48,12 +48,25 @@ class TransactionAction:
             tx.mark_cancelled()
             print(f"Transaction {tx.uuid_transaction} annulée et remboursée.")
 
-    def get_transaction_history(self, user_id: str) -> List[Transaction]:
+    def get_transactions(self, account_id : str):
         
-        if user_id not in self.users:
-            raise ValueError(f"L'utilisateur {user_id} n'existe pas.")
-        return [
-            tx for tx in self.transactions
-            if tx.sender_id == user_id or tx.receiver_id == user_id
-        ]
+        transaction_history = []
 
+        for transaction in self.transactions :
+            if transaction.receiver_id == account_id or transaction.sender_id == account_id :
+                transaction_history.append(transaction)
+        if transaction_history == [] :
+            raise ValueError(f"Il n'y a aucune transactions lié au compte")
+        return transaction_history
+    
+    def get_transaction_details(self, transaction_id : str):
+
+        for transaction in self.transactions :
+            if transaction.uuid_transaction == transaction_id :
+                return transaction
+        raise ValueError(f"La transaction rechercher n'est pas présente")
+
+
+
+        
+            
