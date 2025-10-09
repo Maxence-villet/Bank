@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import uuid4
 from typing import Optional
-from transaction import TransactionStatus
+from api.entities.transaction_status import TransactionStatus
 
 @dataclass(frozen=True)
 class Transaction:
