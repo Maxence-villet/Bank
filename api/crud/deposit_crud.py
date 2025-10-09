@@ -15,7 +15,10 @@ def create_daily_deposit(account_id: str, user_id: str, amount: int):
         db.refresh(daily_deposit)
         return daily_deposit
 
-def get_daily_deposit(account_id: str):
+def get_daily_deposit(account_id: str, user_id: str):
+    if not is_account_owner(account_id, user_id):
+        return {"error": "Unauthorized: You do not own this account.", "status_code": 403}
+    
     with Session(engine) as db:
         statement = select(DailyDeposit).where(
             DailyDeposit.account_id == account_id,
@@ -29,13 +32,13 @@ def get_daily_deposit(account_id: str):
 def add_to_daily_deposit(account_id: str, user_id:str, amount: int):
     if not is_account_owner(account_id, user_id):
         return {"error": "Unauthorized: You do not own this account.", "status_code": 401}
-    dayli_deposit = get_daily_deposit(account_id)
+    daily_deposit = get_daily_deposit(account_id, user_id)
 
-    if dayli_deposit + amount > 200000:
+    if daily_deposit + amount > 200000:
         return {"error": "Daily deposit limit of 2000,00 exceeded.", "status_code": 403}
     if amount < 1:
         return {"error": "Deposit amount must be positive.", "status_code": 400}
-    if dayli_deposit == 0:
+    if daily_deposit == 0:
         create_daily_deposit(account_id, user_id, amount)
     else:
         update_daily_deposit(account_id, amount)

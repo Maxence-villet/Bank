@@ -10,9 +10,9 @@ def register_user(first_name: str, last_name: str, email: str, password: str) ->
         existing_user = db.exec(statement).first()
 
         if existing_user:
-            return {"message": "Email already registered", "status_code": 400}
+            return {"message": "Email already registered", "status_code": 409}
 
-        new_user = User(first_name=first_name, last_name=last_name, email=email, password=password)
+        new_user = User.create(first_name=first_name, last_name=last_name, email=email, password=password)
 
         db.add(new_user)
         db.commit()

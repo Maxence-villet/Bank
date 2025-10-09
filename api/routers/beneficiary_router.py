@@ -11,14 +11,14 @@ from api.crud.beneficiary_crud import (
 
 router = APIRouter(prefix="/beneficiaries", tags=["beneficiaries"])
 
-@router.post("/source_user_id/{source_user_id}/destination_account_id/{destination_account_id}")
-async def api_add_beneficiary(source_user_id: str, destination_account_id: str, first_name: str, last_name: str, iban: str, current_user: str = Depends(get_current_user)):
-    message = add_beneficiary(source_user_id, destination_account_id, first_name, last_name, iban)
+@router.post("/iban/{iban}")
+async def api_add_beneficiary(first_name: str, last_name: str, iban: str, current_user: str = Depends(get_current_user)):
+    message = add_beneficiary(current_user, first_name, last_name, iban)
     return message
 
-@router.get("/source_user_id/{source_user_id}")
-async def api_get_beneficiaries_by_user(source_user_id: str, current_user: str = Depends(get_current_user)):
-    beneficiaries = get_beneficiaries_by_user(source_user_id)
+@router.get("/user")
+async def api_get_beneficiaries_by_user(current_user: str = Depends(get_current_user)):
+    beneficiaries = get_beneficiaries_by_user(current_user)
     return beneficiaries
 
 @router.get("/beneficiary/{beneficiary_id}")
