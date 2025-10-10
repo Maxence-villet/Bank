@@ -4,7 +4,7 @@ from models.transaction import *
 from models.account import Account
 from api.entities.transaction_status import TransactionStatus
 from api.crud.account_crud import get_account_by_id, get_current_account
-from sqlmodel import Session, select, or_
+from sqlmodel import Session, select, or_, desc
 from typing import List
 from uuid import uuid4
 from db.database import engine
@@ -49,10 +49,11 @@ def finalize_transaction( uuid_transaction: str, confirmed: bool):
         tx_model = db.exec(statement).first()
 
         if tx_model is None:
-            raise ValueError(f"Aucune transaction trouvée avec l'UUID {uuid_transaction}.")
+            return {"error": f"Aucune transaction trouvée avec l'UUID {uuid_transaction}.", "status_error": 403}
+        
 
         if tx_model.status != TransactionStatus.pending:
-            raise ValueError(f"La transaction {uuid_transaction} est déjà finalisée.")
+             return {"error": f"La transaction {uuid_transaction} est déjà finalisée.", "status_error": 403}
 
         tx_entity = Transaction(
             sender_id=tx_model.sender_id,
@@ -75,9 +76,10 @@ def finalize_transaction( uuid_transaction: str, confirmed: bool):
             receiver_account = db.get(Account, tx_entity.receiver_id)
 
             if receiver_account is None:
-                raise ValueError("Compte destinataire introuvable")
+                return {"error": "Compte destinataire introuvable.", "status_code": 403}
+            
             if tx_entity.sender_id != "SYSTEM_BANK" and sender_account is None:
-                raise ValueError("Compte expéditeur introuvable")
+                return {"error": "Compte expéditeur introuvable.", "status_code": 403}
 
             # Ne débiter que si ce n'est pas une transaction système
             if sender_account is not None:
@@ -169,7 +171,7 @@ def  get_transactions(account_id: str) -> List[TransactionBaseModel]:
     with Session(engine) as session:
         statement = select(TransactionModel).where(
             (TransactionModel.sender_id == account_id) | (TransactionModel.receiver_id == account_id)
-        )
+        ).order_by(desc(TransactionModel.completed_at), desc(TransactionModel.failed_at), desc(TransactionModel.cancelled_at), desc(TransactionModel.pending_at))
         tx_models = session.exec(statement).all()
 
         transactions = [
