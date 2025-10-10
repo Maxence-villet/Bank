@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from api.crud.user_crud import register_user, get_users
+from api.crud.user_crud import register_user, get_user
 from utils.auth import get_current_user
 from fastapi import Depends
 
@@ -13,6 +13,6 @@ async def api_register_user(first_name: str, last_name: str, email: str, passwor
     return {"message": result["message"]}
 
 @router.get("/")
-async def api_get_users(current_user: str = Depends(get_current_user)):
-    users = get_users()
+async def api_get_user(current_user: str = Depends(get_current_user)):
+    users = get_user(current_user)
     return users

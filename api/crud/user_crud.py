@@ -32,11 +32,11 @@ def register_user(first_name: str, last_name: str, email: str, password: str) ->
 
         return {"message": "User registered successfully", "status_code": 200}
 
-def get_users() -> list[User]:
+def get_user(user_id: str) -> User:
     with Session(engine) as db:
-        statement = select(User)
-        users = db.exec(statement).all()
-        return users
+        statement = select(User).where(User.id == user_id)
+        user = db.exec(statement).first()
+        return user
 
 def get_user_by_id(user_id: str) -> Optional[User]:
     with Session(engine) as db:

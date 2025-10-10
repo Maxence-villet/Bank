@@ -185,7 +185,7 @@ def  get_transactions(account_id: str) -> List[TransactionBaseModel]:
         return transactions
 
 
-def get_transaction_details(transaction_id: str) -> Transaction | dict:
+def get_transaction_details(transaction_id: str) -> dict:
     with Session(engine) as session:
         statement = select(TransactionModel).where(TransactionModel.uuid_transaction == transaction_id)
         tx_model = session.exec(statement).first()
@@ -204,4 +204,4 @@ def get_transaction_details(transaction_id: str) -> Transaction | dict:
             status=tx_model.status,
         )
 
-        return tx_entity
+        return {"message": tx_entity, "status_code": 200}
