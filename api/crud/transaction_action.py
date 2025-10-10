@@ -4,7 +4,7 @@ from models.transaction import *
 from models.account import Account
 from api.entities.transaction_status import TransactionStatus
 from api.crud.account_crud import get_account_by_id, get_current_account
-from sqlmodel import Session, select, or_
+from sqlmodel import Session, select, or_, desc
 from typing import List
 from uuid import uuid4
 from db.database import engine
@@ -171,7 +171,7 @@ def  get_transactions(account_id: str) -> List[TransactionBaseModel]:
     with Session(engine) as session:
         statement = select(TransactionModel).where(
             (TransactionModel.sender_id == account_id) | (TransactionModel.receiver_id == account_id)
-        )
+        ).order_by(desc(TransactionModel.completed_at), desc(TransactionModel.failed_at), desc(TransactionModel.cancelled_at), desc(TransactionModel.pending_at))
         tx_models = session.exec(statement).all()
 
         transactions = [

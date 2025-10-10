@@ -2,7 +2,7 @@ from typing import List, Dict, Optional, Union
 from models.account import Account
 from models.current_account import CurrentAccount
 from api.crud.user_crud import get_user_by_id
-from sqlmodel import Session, select
+from sqlmodel import Session, select, desc
 from db.database import engine
 
 def get_number_of_accounts(user_id: str) -> int:
@@ -57,9 +57,9 @@ def get_accounts(user_id: str) -> list[Account]:
     user = get_user_by_id(user_id)
     if user is None:
         return {"error": "User not found.", "status_code": 404}
-    
+
     with Session(engine) as db:
-        statement = select(Account).where(Account.user_id == user.id)
+        statement = select(Account).where(Account.user_id == user.id).order_by(desc(Account.open_at))
         accounts = db.exec(statement).all()
         if len(accounts) == 0:
             return []
