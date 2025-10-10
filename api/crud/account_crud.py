@@ -26,7 +26,7 @@ def open_account(user_id: str) -> dict:
     user = get_user_by_id(user_id)
     if user is None:
         return {"error": "User not found.", "status_code": 404}
-    if get_number_of_accounts(user.id) >= 4:
+    if get_number_of_accounts(user.id) >= 5:
         return {"error": "Maximum number of accounts reached.", "status_code": 403}
 
 

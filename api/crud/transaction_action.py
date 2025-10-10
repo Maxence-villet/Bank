@@ -49,10 +49,11 @@ def finalize_transaction( uuid_transaction: str, confirmed: bool):
         tx_model = db.exec(statement).first()
 
         if tx_model is None:
-            raise ValueError(f"Aucune transaction trouvée avec l'UUID {uuid_transaction}.")
+            return {"error": f"Aucune transaction trouvée avec l'UUID {uuid_transaction}.", "status_error": 403}
+        
 
         if tx_model.status != TransactionStatus.pending:
-            raise ValueError(f"La transaction {uuid_transaction} est déjà finalisée.")
+             return {"error": f"La transaction {uuid_transaction} est déjà finalisée.", "status_error": 403}
 
         tx_entity = Transaction(
             sender_id=tx_model.sender_id,
@@ -75,9 +76,10 @@ def finalize_transaction( uuid_transaction: str, confirmed: bool):
             receiver_account = db.get(Account, tx_entity.receiver_id)
 
             if receiver_account is None:
-                raise ValueError("Compte destinataire introuvable")
+                return {"error": "Compte destinataire introuvable.", "status_code": 403}
+            
             if tx_entity.sender_id != "SYSTEM_BANK" and sender_account is None:
-                raise ValueError("Compte expéditeur introuvable")
+                return {"error": "Compte expéditeur introuvable.", "status_code": 403}
 
             # Ne débiter que si ce n'est pas une transaction système
             if sender_account is not None:
