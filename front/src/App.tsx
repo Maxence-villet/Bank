@@ -1,12 +1,15 @@
 import Layout from './apps/LayoutPage/pages'
 import './App.css'
+import { BrowserRouter } from 'react-router-dom'
 
 function App() {
 
   return (
     <>
-      <div className='h-[calc(100vh-60px)]'>
+      <div className='h-screen'>
+      <BrowserRouter>
         <Layout />
+      </BrowserRouter>
       </div>
     </>
   )

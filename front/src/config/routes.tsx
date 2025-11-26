@@ -1,81 +1,78 @@
-import React from 'react';
+import Hello from "../apps/Hello/pages";
+import Hello2 from "../apps/Hello2/pages";
+import Hello3 from "../apps/Hello3/pages";
 
-const AccountList = () => <div>Mes comptes</div>;
-const TransactionHistory = () => <div>Historique des transactions</div>;
-const TransactionDetails = () => <div>Détails de la transaction</div>;
-const TransferStart = () => <div>Effectuer un virement (Type)</div>;
-const BeneficiarySelection = () => <div>Choisir un bénéficiaire</div>;
-const TransferAmount = () => <div>Choisir le montant</div>;
-const TransferConfirmation = () => <div>Confirmation du virement</div>;
-const BeneficiaryList = () => <div>Mes bénéficiaires</div>;
-const Profile = () => <div>Profil utilisateur</div>;
-const Login = () => <div>Connexion</div>;
-const Register = () => <div>Inscription</div>;
 
-export interface RouteConfig {
-  path: string;
-  element: React.FC;
-  name: string;
-  isMenuItem?: boolean;
-}
-
-export const AppRoutes: RouteConfig[] = [
-  {
-    path: '/',
-    element: AccountList,
-    name: 'Mes Comptes',
-    isMenuItem: true,
-  },
-  {
-    path: '/transactions/:accountId',
-    element: TransactionHistory,
-    name: 'Historique des Transactions',
-  },
-  {
-    path: '/transactions/details/:transactionId',
-    element: TransactionDetails,
-    name: 'Détails de la Transaction',
-  },
-  {
-    path: '/beneficiaires',
-    element: BeneficiaryList,
-    name: 'Mes Bénéficiaires',
-    isMenuItem: true,
-  },
-  {
-    path: '/profil',
-    element: Profile,
-    name: 'Mon Profil',
-    isMenuItem: true,
-  },
-  {
-    path: '/virement/type',
-    element: TransferStart,
-    name: 'Effectuer un Virement - Type',
-  },
-  {
-    path: '/virement/beneficiaire',
-    element: BeneficiarySelection,
-    name: 'Effectuer un Virement - Bénéficiaire',
-  },
-  {
-    path: '/virement/montant',
-    element: TransferAmount,
-    name: 'Effectuer un Virement - Montant',
-  },
-  {
-    path: '/virement/confirmation',
-    element: TransferConfirmation,
-    name: 'Effectuer un Virement - Confirmation',
-  },
-  {
-    path: '/connexion',
-    element: Login,
-    name: 'Connexion',
-  },
-  {
-    path: '/inscription',
-    element: Register,
-    name: 'Inscription',
-  },
-];
+export const routes = [
+    {
+        path: '/',
+        name: 'dashboard',
+        isMenuItem: true,
+        element: <Hello />,
+        needNavbar: true
+    },
+    {
+        path: '/account',
+        name: 'Mes comptes',
+        element: <Hello2 />,
+        needNavbar: true
+    },
+    {
+        path: '/transaction/:accountId',
+        name: 'Historique des Transactions',
+        // element : my element
+        needNavbar: true
+    },
+    {
+        path: '/transactions/details/:transactionId',
+        name: 'Détails de la Transaction',
+        // element : my element
+        needNavbar: true
+    },
+    {
+        path: '/beneficiaires',
+        name: 'Mes bénéficiaires',
+        // element : my element
+        isMenuItem: true,
+        needNavbar: true
+    },
+    {
+        path: '/profil',
+        name: 'Mon Profile',
+        // element : my element
+        isMenuItem: true,
+        needNavbar: true
+    },
+    {
+        path: '/virement/type',
+        name: 'Effectuer un virement - Type',
+        // element : my element
+        isMenuItem: true,
+        needNavbar: true
+    },
+    {
+        path: '/virement/beneficiaire',
+        name: 'Effectuer un virement - Beneficiaire',
+        // element : my element
+        needNavbar: true
+    },
+    {
+        path: '/virement/confirmation',
+        name: 'Effectuer un virement - Confirmation',
+        // element : my element
+        needNavbar: true
+    },
+    {
+        path: '/connexion',
+        name: 'Connexion',
+        // element : my element
+        needNavbar: false
+        
+    },
+    {
+        path: '/inscription',
+        name: 'Inscription',
+        element: <Hello3 />,
+        needNavbar: false
+    }
+]

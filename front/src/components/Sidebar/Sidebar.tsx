@@ -3,7 +3,7 @@ import CreditCardButton from "../SvgIcons/CreditCardButton";
 import ListButton from "../SvgIcons/ListButton";
 import SendButton from "../SvgIcons/SendButton";
 import AddUserButton from "../SvgIcons/AddUserButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const sidebarButtons = [
     { name: "Dashboard", key: "Home", Icon: HomeButton },
@@ -20,23 +20,15 @@ interface isBurgerMenuOpen {
 
 
 function Sidebar({ isOpen }: isBurgerMenuOpen) {
-    const  [width, setWidth] = useState(50);
     const [buttonClicked, setButtonClicked] = useState("Home");
 
-
-    useEffect(() => {
-        if (isOpen) {
-            setWidth(250);
-        } else {
-            setWidth(50);
-        }
-    }, [isOpen]);
+    const width = isOpen ? 250 : 50;
 
     const handleButtonClick = (key: string) => {
         setButtonClicked(key);
     }
 
-    const SidebarButton = ({ name, buttonKey, Icon }: { name: string, buttonKey: string, Icon: any }) => {
+    const SidebarButton = ({ name, buttonKey, Icon }: { name: string, buttonKey: string, Icon: React.ComponentType<{ fillColor: string }> }) => {
         const isSelected = buttonKey === buttonClicked;
 
         const commonClasses = "flex items-center gap-3 transition-all duration-300 ease-in-out cursor-pointer rounded-md px-2 w-auto";

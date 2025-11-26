@@ -1,7 +1,9 @@
 import Sidebar from "../Sidebar/Sidebar";
 import Header from "../Header/Header";
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { routes } from "../../config/routes";
+
 
 function Layout() {
     const [isOpen, setIsOpen] = useState(false);
@@ -10,24 +12,36 @@ function Layout() {
         setIsOpen(!isOpen);
     };  
 
+    const location = useLocation();
+    const { pathname } = location;
+
+
+    const navbar = useMemo(() => {
+        const currentRoute = routes.find(route => route.path === pathname);
+        return currentRoute ? currentRoute.needNavbar : false;
+    }, [pathname, routes]);
+
     const sidebarWidth = isOpen ? '250px' : '50px';
     const contentWidthClass = `w-[calc(100vw-${sidebarWidth})]`;
 
     return (
         <>
-        <Header onClickBurger={handleMenuClick}/>
-
-        <Sidebar isOpen={isOpen}/>
+        {navbar === true ?
+            <>
+                <Header onClickBurger={handleMenuClick}/>
+                <Sidebar isOpen={isOpen}/> 
+            </> : null
+        }
+        
 
             <main className={`h-[calc(100vh-60px)] ml-[${sidebarWidth}] ${contentWidthClass} overflow-auto transition-all duration-300 ease-in-out pt-[60px]`}>
-                <BrowserRouter>
                     <Routes>
-                        <Route path="/" element={<p className="p-4">Bienvenue ! Naviguez vers /hello pour voir le composant.</p>} />
-                        <Route path="/Account" element={<p className="p-4">Bienvenue ! Naviguez vers /hello pour voir le composant.</p>} />
-                        <Route path="/" element={<p className="p-4">Bienvenue ! Naviguez vers /hello pour voir le composant.</p>} />
-                        <Route path="/" element={<p className="p-4">Bienvenue ! Naviguez vers /hello pour voir le composant.</p>} />
+                        {routes.map((route, index) => {
+                            return (
+                                <Route key={index} path={route.path} element={route.element} />
+                            )
+                        })}
                     </Routes>
-                </BrowserRouter>
             </main>
         </>
     )
