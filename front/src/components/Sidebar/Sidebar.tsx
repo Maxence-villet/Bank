@@ -78,7 +78,7 @@ function Sidebar({ isOpen }: isBurgerMenuOpen) {
     return (
         <>
         <div
-                className="h-screen bg-white fixed z-[8] top-[60px] shadow-sm transition-all duration-300 ease-in-out"
+                className="h-[calc(100vh-60px)] bg-white fixed z-[8] top-[60px] shadow-sm transition-all duration-300 ease-in-out"
                 style={{ width: `${width}px` }}
             >
                 <div className="flex flex-col gap-1 py-5 px-1 m-auto">
