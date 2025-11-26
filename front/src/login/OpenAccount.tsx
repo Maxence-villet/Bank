@@ -5,14 +5,14 @@ function LoginForm() {
 
     <div className="flex h-screen w-full bg-white overflow-hidden font-sans">
       
-      <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 lg:px-24 overflow-y-auto">
+      <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 lg:px-24">
         
         <div className="w-full max-w-md mx-auto">
 
           <div className="flex items-center gap-3 mb-12">
             <div className="relative w-10 h-10">
                  <div>
-            <svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g filter="url(#filter0_i_1387_84)">
                 <path
                     fillRule="evenodd"
@@ -25,12 +25,12 @@ function LoginForm() {
                 <path
                 fillRule="evenodd"
                 clipRule="evenodd"
-                d="M12.441 15.2664C7.22059 21.066 7.41086 29.4769 12.7026 34.7769L23.1495 25.1882C29.5412 19.3172 30.0347 8.82432 23.7262 2.87598C23.7262 2.87598 17.6615 9.46674 12.441 15.2664Z"
+                d="M12.441 15.2664C7.22059 21.066 7.41086 29.6069 12.7026 34.7769L23.1495 25.1882C29.5412 19.3172 30.0360 8.82432 23.7262 2.87598C23.7262 2.87598 17.6615 9.46674 12.441 15.2664Z"
                 fill="#58C5C3"
                 />
 
                 <defs>
-                <filter id="filter0_i_1387_84" x="0" y="0" width="47" height="47" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+                <filter id="filter0_i_1387_84" x="0" y="0" width="60" height="60" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
                     <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
@@ -48,10 +48,10 @@ function LoginForm() {
             <span className="text-4xl font-bold text-gray-900 ">FINVO</span>
           </div>
           <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
-            Content de vous revoir !
+            Créer votre compte
           </h1>
           <h2 className="text-gray-600 text-lg mb-8 font-medium">
-            Connectez-vous à votre compte
+            Rejoignez des milliers d'utilisateurs
           </h2>
 
           <form className="space-y-6">
@@ -80,27 +80,34 @@ function LoginForm() {
               />
             </div>
 
+            <div>
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                Confirmez le mot de passe
+              </label>
+              <input 
+                type="password" 
+                id="password"
+                className="w-full p-3 border border-gray-300 rounded-md text-gray-900"
+              />
+            </div>
+
             <div className="pt-2">
               <button 
                 type="submit"
                 className="bg-teal-400 hover:bg-teal-500 text-white font-bold py-3 px-6 rounded-md transition duration-300 w-auto inline-block"
               >
-                Se connecter
+                S'inscrire
               </button>
-
-              <span className="ml-4 text-sm text-gray-400">
-                  <a href="#" className="hover:text-teal-500 transition">Mot de passe oublié ?</a>
-              </span>
             </div>
 
              <div className="border-t border-gray-500 mt-8 pt-6"></div>
 
              <span className="ml-4 text-sm text-gray-400 inline-block">
-                  <p>Pas encore de compte ?</p>
+                  <p>Vous avez déjà un compte ?</p>
               </span>
 
               <span className="ml-4 text-sm text-gray-400">
-                  <a href="/open-account" className="text-teal-500">Ouvrez un compte</a>
+                  <a href="login.tsx" className="text-teal-500">Se connecter</a>
               </span>
           </form>
 
@@ -113,7 +120,14 @@ function LoginForm() {
             alt="Illustration Finance"
             className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 "></div>
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-10 text-white">
+            <h3 className="text-5xl font-extrabold mb-4 leading-tight">
+              La banque,<br />simplifiée
+            </h3>
+            <p className="text-lg max-w-sm">
+                 Dashboard tout en un pour le paiement et suivre vos transactions
+             </p>
+         </div>
       </div>
 
     </div>
