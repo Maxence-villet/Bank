@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AllAccounts from "./components/Account/AllAccounts";
+import AddAccount from "./components/Account/AddAccount";
 
 function MyAccount() {
     const [totalAccounts, setTotalAccounts] = useState(0);
@@ -22,7 +23,7 @@ function MyAccount() {
                         <h3 className="font-bold">{totalAccounts}€</h3>   
                     </div>
                 </div>
-                <button className="border-2 border-black rounded-md font-bold text-xl px-5 py-3">Ajouter un compte +</button>
+                <AddAccount />
             </div>
             
             <AllAccounts />
