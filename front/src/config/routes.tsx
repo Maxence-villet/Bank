@@ -1,6 +1,3 @@
-import Hello from "../apps/Hello/pages";
-import Hello2 from "../apps/Hello2/pages";
-import Hello3 from "../apps/Hello3/pages";
 import LoginPage from "../apps/LoginPage/page";
 
 
@@ -10,13 +7,11 @@ export const routes = [
         path: '/',
         name: 'dashboard',
         isMenuItem: true,
-        element: <Hello />,
         needNavbar: true
     },
     {
         path: '/account',
         name: 'Mes comptes',
-        element: <Hello2 />,
         needNavbar: true
     },
     {
@@ -74,7 +69,6 @@ export const routes = [
     {
         path: '/inscription',
         name: 'Inscription',
-        element: <Hello3 />,
         needNavbar: false
     }
 ]
