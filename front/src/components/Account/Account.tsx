@@ -8,7 +8,7 @@ interface AccountType {
 function Account(account: AccountType) {
     return (
         <>
-            <div className="text-left flex flex-col gap-4 background-white border-0 rounded-xl p-6 my-4 bg-white max-w-md">
+            <div className="text-left flex flex-col gap-4 background-white border-0 rounded-2xl p-6 bg-white max-w-md">
                 <h2 className="text-xl">{account.name}</h2>
                 <div className="flex flex-column justify-between">
                     <p className="font-bold">{account.amount}€</p>
