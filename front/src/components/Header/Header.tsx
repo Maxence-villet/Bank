@@ -5,7 +5,7 @@ interface HeaderProps {
 
 function Header({ onClickBurger }: HeaderProps) {
     return (
-        <header>
+        <header className="h-[60px]">
             <div className="flex flex-row bg-white w-full p-3 shadow-sm h-[60px] px-3 justify-between z-[9] fixed top-0">
                 <div className="flex">
                     <button onClick={onClickBurger}>
