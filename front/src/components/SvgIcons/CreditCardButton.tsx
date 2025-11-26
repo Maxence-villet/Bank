@@ -1,0 +1,27 @@
+import type SvgIconProps from '../../types/svg';
+
+
+const CreditCardButton = ({ fillColor }: SvgIconProps) => {
+    const CREDIT_CARD_ICON_PROPS: SvgIconProps = {
+    path: "M0.833333 0H15.8333C16.2936 0 16.6667 0.373092 16.6667 0.833333V14.1667C16.6667 14.6269 16.2936 15 15.8333 15H0.833333C0.3731 15 0 14.6269 0 14.1667V0.833333C0 0.373092 0.3731 0 0.833333 0ZM15 6.66667H1.66667V13.3333H15V6.66667ZM15 5V1.66667H1.66667V5H15ZM10 10H13.3333V11.6667H10V10Z",
+    fillColor: fillColor, 
+    }; 
+
+    return (
+        <>
+        <svg 
+            width="17"
+            height="15"
+            viewBox="0 0 17 15"
+            fill="none"
+            >
+            <path 
+                    d={CREDIT_CARD_ICON_PROPS.path} 
+                    fill={CREDIT_CARD_ICON_PROPS.fillColor}
+            />
+        </svg>
+        </>
+    )
+}
+
+export default CreditCardButton;
