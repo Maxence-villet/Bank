@@ -1,6 +1,8 @@
 import Hello from "../apps/Hello/pages";
 import Hello2 from "../apps/Hello2/pages";
 import Hello3 from "../apps/Hello3/pages";
+import LoginPage from "../apps/LoginPage/page";
+
 
 
 export const routes = [
@@ -65,7 +67,7 @@ export const routes = [
     {
         path: '/connexion',
         name: 'Connexion',
-        // element : my element
+        element: <LoginPage />,
         needNavbar: false
         
     },

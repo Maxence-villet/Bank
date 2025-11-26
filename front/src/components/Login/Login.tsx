@@ -1,4 +1,4 @@
-import sideIllustration from '../assets/side-illustration.png'; 
+import sideIllustration from '../../assets/side-illustration.png'; 
 
 function LoginForm() {
   return (

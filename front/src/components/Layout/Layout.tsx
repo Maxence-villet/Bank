@@ -30,11 +30,8 @@ function Layout() {
             <>
                 <Header onClickBurger={handleMenuClick}/>
                 <Sidebar isOpen={isOpen}/> 
-            </> : null
-        }
-        
+                 <main className={`h-[calc(100vh-60px)] ml-[${sidebarWidth}] ${contentWidthClass} overflow-auto transition-all duration-300 ease-in-out pt-[60px]`}>
 
-            <main className={`h-[calc(100vh-60px)] ml-[${sidebarWidth}] ${contentWidthClass} overflow-auto transition-all duration-300 ease-in-out pt-[60px]`}>
                     <Routes>
                         {routes.map((route, index) => {
                             return (
@@ -42,7 +39,21 @@ function Layout() {
                             )
                         })}
                     </Routes>
-            </main>
+                </main>
+            </> :  
+            <>
+            <main>
+                    <Routes>
+                        {routes.map((route, index) => {
+                            return (
+                                <Route key={index} path={route.path} element={route.element} />
+                            )
+                        })}
+                    </Routes>
+                </main>
+            </>
+        }
+         
         </>
     )
 }
