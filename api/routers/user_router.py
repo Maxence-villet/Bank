@@ -3,7 +3,7 @@ from api.crud.user_crud import register_user, get_user
 from utils.auth import get_current_user
 from fastapi import Depends
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(prefix="/user", tags=["user"])
 
 @router.post("/register")
 async def api_register_user(first_name: str, last_name: str, email: str, password: str):

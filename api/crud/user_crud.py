@@ -1,4 +1,5 @@
 from typing import Optional
+from api.shemas.user import UserPublic
 from models.user import User
 from sqlmodel import Session, select
 from db.database import engine
@@ -35,8 +36,17 @@ def register_user(first_name: str, last_name: str, email: str, password: str) ->
 def get_user(user_id: str) -> User:
     with Session(engine) as db:
         statement = select(User).where(User.id == user_id)
-        user = db.exec(statement).first()
-        return user
+        user_db: Optional[User] = db.exec(statement).one_or_none()
+
+        if user_db is None:
+            return {"error": "User not found.", "status_code": 404}
+
+        return UserPublic(
+            first_name=user_db.first_name,
+            last_name=user_db.last_name,
+            email=user_db.email,
+            register_at=user_db.register_at
+        ) 
 
 def get_user_by_id(user_id: str) -> Optional[User]:
     with Session(engine) as db:

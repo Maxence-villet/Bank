@@ -22,18 +22,19 @@ class Transaction:
 
     def mark_completed(self):
         if not self.check_pending():
-            raise ValueError("Transaction already finalized.")
+            return {"error": "Transaction already finalized.", "status_code": 403}
+            
         object.__setattr__(self, "completed_at", datetime.now())
         object.__setattr__(self, "status", TransactionStatus.completed)
 
     def mark_failed(self):
         if not self.check_pending():
-            raise ValueError("Transaction already finalized.")
+            return {"error": "Transaction already finalized.", "status_code": 403}
         object.__setattr__(self, "failed_at", datetime.now())
         object.__setattr__(self, "status", TransactionStatus.failed)
 
     def mark_cancelled(self):
         if not self.check_pending():
-            raise ValueError("Transaction already finalized.")
+            return {"error": "Transaction already finalized.", "status_code": 403}
         object.__setattr__(self, "cancelled_at", datetime.now())
         object.__setattr__(self, "status", TransactionStatus.cancelled)
