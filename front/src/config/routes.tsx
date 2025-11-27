@@ -1,4 +1,5 @@
 import LoginPage from "../apps/LoginPage/page";
+import MyAccount from "../apps/MyAccountPage/MyAccount";
 
 
 
@@ -12,6 +13,8 @@ export const routes = [
     {
         path: '/comptes',
         name: 'Mes comptes',
+        element: <MyAccount />,
+        isMenuItem: true,
         needNavbar: true
     },
     {
