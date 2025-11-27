@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import AddBeneficiary from "../../components/Beneficiary/addBeneficiary";
+import AddBeneficiary from "../../components/Beneficiary/AddBeneficiary";
+import AllBeneficiary from "../../components/Beneficiary/AllBeneficiary";
 
 function Beneficiary() {
     const [totalAccounts, setTotalAccounts] = useState(0);
@@ -24,6 +25,7 @@ function Beneficiary() {
                 </div>
                 <AddBeneficiary />
             </div>
+            <AllBeneficiary />
         </div>
     );
 }
