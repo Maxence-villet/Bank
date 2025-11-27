@@ -216,7 +216,7 @@ function RegisterForm() {
                     La banque,<br />simplifiée
                 </h3>
                 <p className="text-lg max-w-sm">
-                    Dashboard tout en un pour le paiement et suivre vos transactions
+                    Dashboard tout en un pour le paiement <br />et suivre vos transactions
                 </p>
             </div>
             </div>

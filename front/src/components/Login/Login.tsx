@@ -43,7 +43,7 @@ function LoginForm() {
 
       localStorage.setItem('access_token', data.access_token);
 
-      navigate('/dashboard');
+      navigate('/');
 
 
     } catch (err: any) {
