@@ -165,20 +165,12 @@ function VirementPage() {
       
       let fromName = 'Compte expéditeur';
       if (fromAccount) {
-        if (fromAccount.id.startsWith('C')) {
-          fromName = 'compte courant';
-        } else {
-          fromName = `Compte se terminant par ${fromAccount.iban.slice(-4)}`;
-        }
+        fromName = fromAccount.name || (fromAccount.id.startsWith('C') ? 'compte courant' : `Compte se terminant par ${fromAccount.iban.slice(-4)}`);
       }
-      
+
       let toName = 'Compte destinataire';
       if (toAccount) {
-        if (toAccount.id.startsWith('C')) {
-          toName = 'compte courant';
-        } else {
-          toName = `Compte se terminant par ${toAccount.iban.slice(-4)}`;
-        }
+        toName = toAccount.name || (toAccount.id.startsWith('C') ? 'compte courant' : `Compte se terminant par ${toAccount.iban.slice(-4)}`);
       }
 
       doc.setFontSize(20);
@@ -188,10 +180,16 @@ function VirementPage() {
       doc.text(`Date: ${date}`, 20, 50);
       doc.text(`ID Transaction: ${transactionDetails.uuid}`, 20, 60);
       doc.text(`De: ${fromName}`, 20, 80);
-      doc.text(`Vers: ${toName}`, 20, 90);
-      doc.text(`Montant: ${transactionDetails.amount.toFixed(2)} €`, 20, 100);
+      if (fromAccount) {
+        doc.text(`IBAN: ${fromAccount.iban}`, 20, 90);
+      }
+      doc.text(`Vers: ${toName}`, 20, 100);
+      if (toAccount) {
+        doc.text(`IBAN: ${toAccount.iban}`, 20, 110);
+      }
+      doc.text(`Montant: ${transactionDetails.amount.toFixed(2)} €`, 20, 120);
       if (transactionDetails.label) {
-        doc.text(`Libellé: ${transactionDetails.label}`, 20, 110);
+        doc.text(`Libellé: ${transactionDetails.label}`, 20, 130);
       }
 
       doc.save('recu_virement.pdf');
@@ -296,11 +294,7 @@ function VirementPage() {
                     const transferAmount = transferData.amount.toFixed(2);
                     let beneficiaryName = 'Compte interne';
                     if (creditAccount) {
-                      if (creditAccount.id.startsWith('C')) {
-                        beneficiaryName = 'compte courant';
-                      } else {
-                        beneficiaryName = `Compte se terminant par ${creditAccount.iban.slice(-4)}`;
-                      }
+                      beneficiaryName = creditAccount.name || (creditAccount.id.startsWith('C') ? 'compte courant' : `Compte se terminant par ${creditAccount.iban.slice(-4)}`);
                     }
                     const steps = [
                       { number: 1, title: "Type de virement", isActive: true },

@@ -3,4 +3,5 @@ export interface Account {
   amount: number;
   iban: string;
   open_at: string; // ISO date string
+  name?: string;
 }
