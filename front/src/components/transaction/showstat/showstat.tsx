@@ -7,7 +7,7 @@ type ShowStatProps = {
 }
 const ShowStat = ({title,stat,isPriceGain}:ShowStatProps) => {
     return (
-        <div style={{ margin: '16px 24px 16px 24px' }} className="w-[376px] h-[112px] flex flex-row">
+        <div style={{ padding: '16px 24px 16px 24px' }} className="w-[376px] h-[112px] flex flex-row rounder-[16px]  rounded-[16px] bg-white">
             <div className="size-fit-content">
                 <Icon
                     bgColor={isPriceGain ? "#9ff8f3ff" : "#f3a79aff"}

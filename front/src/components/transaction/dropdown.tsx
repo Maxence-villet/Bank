@@ -1,11 +1,11 @@
 const Dropdown = () => {
   return (
     <div className="relative w-[230px]">
-      <select
-        className="
+      <select style={{borderWidth:"3px"}}
+        className=" text-[#002222]
           w-full 
           appearance-none               /* enlève la flèche native */
-          border-solid border-[#8C9C9C] border-2
+          border-solid border-[#8C9C9C]
           py-2 pl-4 pr-10               /* pr-10 = espace pour la flèche */
           rounded-[6px] text-[16px] h-[48px]
         "

@@ -46,7 +46,7 @@ const CardGenerator = ({ cards }: CardGeneratorProps) => {
   }, [completed]); 
 
   return (
-    <div className="flex flex-col gap-[24px]  w-full">
+    <div className="flex flex-col gap-[24px]  w-full h-full ">
 
       {inProgress.length > 0 && (
         <div>

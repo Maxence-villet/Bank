@@ -3,7 +3,7 @@ import TransactionContent from "../../components/transaction/transactionContent"
 
 const  TransactionPage = () => {
     return (
-        <div style={{ paddingLeft: "48px" ,paddingRight: "24px"}}>
+        <div className="h-full flex flex-grow flex-col" style={{ paddingLeft: "48px" ,paddingRight: "24px", paddingBottom:"48px"}}>
             <HeaderTransaction/>
             <TransactionContent/>
         </div>

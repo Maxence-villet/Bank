@@ -1,8 +1,8 @@
 const ButtonDownload = () => {
     return (
-        <button
+        <button style={{borderWidth:'3px'}}
   className="flex items-center justify-center gap-2 px-4 
-  py-4 -[6px] border-2 border-black  text-black
+  py-4 -[6px]  border-[#002222] text-[#002222]
 font-bold rounded-[6px]  text-[18px] h-[56px] leading-[133%]
   "
 >
