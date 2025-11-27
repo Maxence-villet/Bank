@@ -1,6 +1,8 @@
 import LoginPage from "../apps/LoginPage/page";
+import RegisterForm from "../components/Register/Register";
 import MyAccount from "../apps/MyAccountPage/MyAccount";
 import Beneficiary from "../apps/BeneficiaryPage/Beneficiary";
+import VirementPage from "../apps/VirementPage/page";
 
 
 
@@ -47,7 +49,7 @@ export const routes = [
     {
         path: '/virement/type',
         name: 'Effectuer un virement - Type',
-        // element : my element
+        element: <VirementPage />,
         isMenuItem: true,
         needNavbar: true
     },
@@ -73,6 +75,7 @@ export const routes = [
     {
         path: '/inscription',
         name: 'Inscription',
+        element : <RegisterForm/>,
         needNavbar: false
     }
 ]
