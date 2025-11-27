@@ -30,7 +30,11 @@ function AllAccounts() {
       enabled: !!token,
     });
 
-    console.log(accounts)
+    const formatIban = (iban: string) => {
+        if (!iban) return '';
+        const first16 = iban.slice(0, 16);
+        return first16.match(/.{1,4}/g)?.join(' ') ?? first16;
+    }
 
     return(
         <>
@@ -41,7 +45,7 @@ function AllAccounts() {
                         id={account.id}
                         name={account.name}
                         amount={account.amount}
-                        iban={account.iban}
+                        iban={formatIban(account.iban)}
                     />
                 ))}
             </div>
