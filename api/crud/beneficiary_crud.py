@@ -17,21 +17,6 @@ def add_beneficiary(source_user_id: str, first_name: str, last_name: str, iban: 
         return {"error": "User not found", "status_code": 404}
 
     with Session(engine) as db:
-        statement = select(Beneficiary).where(
-            Beneficiary.source_user_id == source_user_id and
-            Beneficiary.first_name == first_name and
-            Beneficiary.last_name == last_name and
-            Beneficiary.iban == iban
-        )
-
-        existing_beneficiary = db.exec(statement).first()
-        if existing_beneficiary:
-            return {"error": "beneficiary already exists for this account", "status_code": 403}
-
-        source_accounts = get_accounts(source_user_id)
-        for account in source_accounts:
-            if account.iban == iban:
-                return {"error": "Your account cannot be a self beneficiary", "status_code": 403}
 
         new_beneficiary = Beneficiary(
             source_user_id=source_user_id,

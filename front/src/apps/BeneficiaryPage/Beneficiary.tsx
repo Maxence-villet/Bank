@@ -70,7 +70,7 @@ function Beneficiary() {
                 </div>
                 <AddBeneficiary onAdd={fetchBeneficiaries} />
             </div>
-            <AllBeneficiary beneficiaries={beneficiaries} />
+            <AllBeneficiary beneficiaries={beneficiaries} onDelete={fetchBeneficiaries} />
         </div>
     );
 }

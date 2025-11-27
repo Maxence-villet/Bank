@@ -8,9 +8,10 @@ interface BeneficiaryType {
 
 interface AllBeneficiaryProps {
     beneficiaries: BeneficiaryType[];
+    onDelete: () => void;
 }
 
-function AllBeneficiary({ beneficiaries }: AllBeneficiaryProps) {
+function AllBeneficiary({ beneficiaries, onDelete }: AllBeneficiaryProps) {
     return(
         <>
             <div className="grid grid-cols-1 lg:grid-cols-2 max-w-3xl gap-8">
@@ -20,6 +21,7 @@ function AllBeneficiary({ beneficiaries }: AllBeneficiaryProps) {
                         id={beneficiary.id}
                         name={beneficiary.name}
                         iban={beneficiary.iban}
+                        onDelete={onDelete}
                     />
                 ))}
             </div>
