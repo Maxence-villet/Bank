@@ -26,6 +26,38 @@ const mockBeneficiaries = [
 ];
 
 
+// Rendu d'une étape individuelle
+interface StepItemProps {
+    number: number;
+    title: string;
+    // Les styles basés sur l'état sont maintenant gérés par ces props
+    bubbleBg: string;      // ex: 'bg-teal-400', 'bg-teal-300', 'bg-teal-100'
+    numberColor: string;   // ex: 'text-white', 'text-black'
+    titleColor: string;    // ex: 'text-teal-700 font-bold', 'text-gray-500 font-normal'
+}
+
+const StepItem = ({ number, title, bubbleBg, numberColor, titleColor }: StepItemProps) => {
+    return (
+        <div className="flex flex-col items-center relative">
+            <div className="flex items-center">
+                <div className={`w-12 h-12 px-3.5 py-0.5 ${bubbleBg} rounded-[48px] flex justify-center items-center shrink-0`}>
+                    <div className={`${numberColor} text-lg font-bold leading-6`}>{number}</div>
+                </div>
+                <div className={`ml-4 ${titleColor} text-lg leading-6 whitespace-nowrap`}>
+                    {title}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Composant pour le trait de séparation
+const Separator = ({ isActive }: { isActive: boolean }) => (
+    // Utilise une couleur plus claire pour le trait inactif (comme le gris ou neutral-400)
+    <div className={`flex-1 h-0 border-t ${isActive ? 'border-teal-400' : 'border-neutral-400'} mx-4`}></div>
+);
+
+
 function Step2() {
     const [debitAccount, setDebitAccount] = useState('Compte principal');
     const [searchTerm, setSearchTerm] = useState('');
@@ -46,30 +78,53 @@ function Step2() {
     return (
             <div className="flex-1 self-stretch px-6 flex flex-col justify-start items-center gap-12">
                 
-                <div className="inline-flex justify-start items-center gap-4">
+                {/* Barre de progression : Reprise de la structure de l'image a3fca0.png */}
+                <div className="flex items-center w-full max-w-[800px] pt-6">
                     
-                    <div className="flex justify-start items-center gap-6 flex-wrap content-center">
-                        <div className="w-12 h-12 px-3.5 py-0.5 bg-teal-400 rounded-[48px] flex justify-center items-center">
-                            <div className="text-white text-lg font-bold leading-6">1</div>
-                        </div>
-                        <div className="text-teal-700 text-lg font-bold leading-6">Type de virement</div>
-                        <div className="w-24 border-t border-neutral-400"></div> 
-                    </div>
+                    {/* ÉTAPE 1 : Type de virement (Complétée) */}
+                    <StepItem 
+                        number={1} 
+                        title="Type de virement" 
+                        bubbleBg="bg-teal-400" 
+                        numberColor="text-white" 
+                        titleColor="text-teal-700 font-bold" 
+                    />
+
+                    {/* Trait complété */}
+                    <Separator isActive={true} />
                     
-                    <div className="flex justify-start items-center gap-6 flex-wrap content-center">
-                        <div className="w-12 h-12 px-3.5 py-0.5 bg-teal-300 rounded-[48px] flex justify-center items-center">
-                            <div className="text-black text-lg font-bold leading-6">2</div>
-                        </div>
-                        <div className="justify-start text-teal-700 text-lg font-bold leading-6">Bénéficiaire</div>
-                        <div className="w-24 border-t border-neutral-400"></div>
-                    </div>
+                    {/* ÉTAPE 2 : Choisir un Bénéficiaire (Actuelle) */}
+                    <StepItem 
+                        number={2} 
+                        title="Choisir un Bénéficiaire" 
+                        bubbleBg="bg-teal-300" 
+                        numberColor="text-black" 
+                        titleColor="text-teal-700 font-bold" 
+                    />
                     
-                    <div className="flex justify-start items-center gap-6 flex-wrap content-center">
-                        <div className="w-12 h-12 px-3.5 py-0.5 bg-teal-100 rounded-[48px] flex justify-center items-center">
-                            <div className="text-black text-lg font-bold leading-6">4</div>
-                        </div>
-                        <div className="justify-start text-gray-500 text-lg font-bold leading-6">Confirmation</div>
-                    </div>
+                    {/* Trait inactif */}
+                    <Separator isActive={false} />
+
+                    {/* ÉTAPE 3 : Choisir un montant (Inactive) */}
+                    <StepItem 
+                        number={3} 
+                        title="Choisir un montant" 
+                        bubbleBg="bg-teal-100" 
+                        numberColor="text-black" 
+                        titleColor="text-gray-500 font-normal" 
+                    />
+
+                    {/* Trait inactif */}
+                    <Separator isActive={false} />
+                    
+                    {/* ÉTAPE 4 : Confirmation (Inactive) */}
+                    <StepItem 
+                        number={4} 
+                        title="Confirmation" 
+                        bubbleBg="bg-teal-100" 
+                        numberColor="text-black" 
+                        titleColor="text-gray-500 font-normal" 
+                    />
                 </div>
 
                 <div className="w-[500px] p-6 bg-white rounded-2xl flex flex-col justify-start items-start gap-8 shadow-lg">

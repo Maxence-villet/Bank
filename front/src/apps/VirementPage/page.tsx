@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Step2 from '../../components/Virements/Externe/Step2';
+import Step4 from '../../components/Virements/Externe/Step4';
 
 function VirementPage() {
     const [step, setStep] = useState(1);
@@ -7,7 +7,7 @@ function VirementPage() {
     
     return (
         <>
-        <Step2 />
+        <Step4 />
         </>  
     );
 }
