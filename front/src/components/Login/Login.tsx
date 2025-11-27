@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import sideIllustration from '../../assets/side-illustration.png';
 
 
@@ -10,7 +11,7 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +42,7 @@ function LoginForm() {
         throw new Error(data.detail || 'Erreur d\'authentification. Veuillez vérifier vos identifiants.');
       }
 
-      localStorage.setItem('access_token', data.access_token);
+      login(data.access_token);
 
       navigate('/');
 
