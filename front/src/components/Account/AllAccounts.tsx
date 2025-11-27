@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Account from "../Account/Account";
 import { useAuth } from "../../contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
