@@ -4,7 +4,7 @@ function CloseAccount(id : {id: number}) {
     const [isClosing, setIsClosing] = useState(false);
     const [error, setError] = useState("");
 
-    function closeAccount() {
+    function verifAndCloseAccount() {
         console.log(id);
         resetAll()
     }
@@ -30,11 +30,14 @@ function CloseAccount(id : {id: number}) {
                     {error != "" &&(
                         <p className="font-bold text-red-500 text-left">{ error }</p>
                     )}
-                    <p>Vous êtes sur le point de clôturer votre compte. Le solde de votre compte sera transféré sur votre compte principal.</p>
+                    <p className="mb-3">Vous êtes sur le point de clôturer votre compte. Le solde de votre compte sera transféré sur votre compte principal.</p>
+
+                    <h6 className="mb-1 font-normal">Confirmer votre mot de passe</h6>
+                    <input type="text" placeholder="Mot de passe" className="border-2 border-gray-300 rounded-md px-3 py-3 font-normal w-full"/>
                     
                     <div className="flex flex-row gap-2 pt-5 text-xl">
                         <button onClick={() => resetAll()} className="rounded-md border-2 px-6 py-3 font-bold">Annuler</button>
-                        <button type="button" onClick={() => closeAccount()} className="bg-[#EB7C3F] rounded-md px-6 py-3 font-bold">Cloturer</button>
+                        <button type="button" onClick={() => verifAndCloseAccount()} className="bg-[#EB7C3F] rounded-md px-6 py-3 font-bold">Cloturer</button>
                     </div>
                 </div>
             )}
