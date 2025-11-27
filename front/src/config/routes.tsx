@@ -1,4 +1,6 @@
 import LoginPage from "../apps/LoginPage/page";
+import VirementPage from "../apps/VirementPage/page";
+
 
 
 
@@ -43,7 +45,7 @@ export const routes = [
     {
         path: '/virement/type',
         name: 'Effectuer un virement - Type',
-        // element : my element
+        element: <VirementPage />,
         isMenuItem: true,
         needNavbar: true
     },
