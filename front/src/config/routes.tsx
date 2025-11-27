@@ -1,5 +1,6 @@
 import LoginPage from "../apps/LoginPage/page";
 import MyAccount from "../apps/MyAccountPage/MyAccount";
+import Beneficiary from "../apps/BeneficiaryPage/Beneficiary";
 
 
 
