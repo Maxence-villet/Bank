@@ -4,6 +4,7 @@ from models.current_account import CurrentAccount
 from models.transaction import TransactionModel
 from api.entities.transaction import Transaction
 from api.crud.user_crud import get_user_by_id
+from models.user import pwd_context
 from sqlmodel import Session, select, desc
 from db.database import engine
 from uuid import uuid4
@@ -14,14 +15,21 @@ def get_number_of_accounts(user_id: str) -> int:
         accounts = db.exec(statement).all()
         return len(accounts)
 
-def close_account(account_id: str) -> dict:
+def close_account(account_id: str, user_id: str, password: str) -> dict:
+    # Verify password
+    user = get_user_by_id(user_id)
+    if user is None or not pwd_context.verify(password, user.password):
+        return {"error": "Invalid password", "status_code": 401}
+
     account = get_account_by_id(account_id)
     if account is None:
         return {"error": "Account not found.", "status_code": 404}
+    if account.user_id != user_id:
+        return {"error": "Unauthorized to close this account", "status_code": 403}
     if account.is_current_account:
         return {"error": "Cannot close a current account.", "status_code": 403}
 
-    current_account = get_current_account(account.user_id)
+    current_account = get_current_account(user_id)
     if current_account is None:
         return {"error": "No current account found for this user.", "status_code": 404}
 

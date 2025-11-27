@@ -1,34 +1,18 @@
-import Account from "../Account/Account";
-import { useAuth } from "../../contexts/AuthContext";
-import { useQuery } from "@tanstack/react-query";
+import Account from "./Account";
 
 interface AccountType {
-    id: number,
-    name: string,
-    amount: number,
-    iban: string,
+    id: string;
+    name: string;
+    amount: number;
+    iban: string;
 }
 
-function AllAccounts() {
-    const { token } = useAuth();
+interface AllAccountsProps {
+    accounts: AccountType[];
+    onClose?: () => void;
+}
 
-    const { data: accounts = [] } = useQuery<AccountType[]>({
-      queryKey: ['accounts'],
-      queryFn: async () => {
-        if (!token) throw new Error('No token');
-        const response = await fetch('http://localhost:8000/accounts/user', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch accounts');
-        }
-        return response.json();
-      },
-      enabled: !!token,
-    });
-
+function AllAccounts({ accounts, onClose }: AllAccountsProps) {
     const formatIban = (iban: string) => {
         if (!iban) return '';
         const first16 = iban.slice(0, 16);
@@ -43,8 +27,9 @@ function AllAccounts() {
                         key={account.id}
                         id={account.id}
                         name={account.name}
-                        amount={account.amount}
+                        amount={account.amount / 100} // Divide by 100 for euros
                         iban={formatIban(account.iban)}
+                        onClose={onClose}
                     />
                 ))}
             </div>

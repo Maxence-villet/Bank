@@ -1,22 +1,90 @@
-import { useState} from "react";
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
-function CloseAccount(id : {id: number}) {
+interface CloseAccountProps {
+    id: string;
+    onClose?: () => void;
+}
+
+function CloseAccount({ id, onClose }: CloseAccountProps) {
+    const { token } = useAuth();
+    const queryClient = useQueryClient();
     const [isClosing, setIsClosing] = useState(false);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [password, setPassword] = useState("");
 
-    function verifAndCloseAccount() {
-        console.log(id);
-        resetAll()
-    }
+    const closeAccount = async () => {
+        setError("");
+        setLoading(true);
+
+        if (!token) {
+            setError("No authentication token");
+            setLoading(false);
+            return;
+        }
+
+        if (!password.trim()) {
+            setError("Please enter your password");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8000/accounts/close/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ password }),
+            });
+
+            if (!response.ok) {
+                let errorMsg = `HTTP error! status: ${response.status}`;
+                try {
+                    const errorData = await response.json();
+                    if (response.status === 401) {
+                        errorMsg = "Mot de passe incorrect";
+                    } else {
+                        errorMsg = errorData.detail || errorData.error || errorMsg;
+                    }
+                } catch (parseErr) {
+                    // If JSON parse fails, use generic
+                }
+                throw new Error(errorMsg);
+            }
+
+            const data = await response.json();
+            console.log("Account closed:", data);
+            setIsClosing(false);
+            queryClient.invalidateQueries({ queryKey: ['accounts'] });
+            onClose?.();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to close account");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     function resetAll() {
-        setIsClosing(!isClosing)
-        setError("")
+        setIsClosing(false);
+        setError("");
+        setPassword("");
     }
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    };
 
     return (
         <div>
-            <button onClick={() => resetAll()} className="border-2 rounded-md px-3 py-2 flex flex-row gap-1 items-center">
+            <button 
+                onClick={() => setIsClosing(true)} 
+                className="border-2 rounded-md px-3 py-2 flex flex-row gap-1 items-center"
+                disabled={loading}
+            >
                 <svg width="18" height="22" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6.66658 6.66667C7.03478 6.66667 7.33325 6.96514 7.33325 7.33333V11.3333C7.33325 11.7015 7.03478 12 6.66658 12C6.2984 12 5.99992 11.7015 5.99992 11.3333V7.33333C5.99992 6.96514 6.2984 6.66667 6.66658 6.66667Z" fill="#2D3648"/>
                     <path d="M9.99992 11.3333V7.33333C9.99992 6.96514 9.70144 6.66667 9.33325 6.66667C8.96506 6.66667 8.66658 6.96514 8.66658 7.33333V11.3333C8.66658 11.7015 8.96506 12 9.33325 12C9.70144 12 9.99992 11.7015 9.99992 11.3333Z" fill="#2D3648"/>
@@ -27,17 +95,32 @@ function CloseAccount(id : {id: number}) {
             {isClosing && (
                 <div className="px-7 py-8 border-0 rounded-2xl bg-white shadow-lg z-10 w-[700px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <h2 className="text-4xl font-bold mb-6 text-left">Cloturer un compte</h2>
-                    {error != "" &&(
+                    {error !== "" &&(
                         <p className="font-bold text-red-500 text-left">{ error }</p>
                     )}
                     <p className="mb-3">Vous êtes sur le point de clôturer votre compte. Le solde de votre compte sera transféré sur votre compte principal.</p>
-
+                    
                     <h6 className="mb-1 font-normal">Confirmer votre mot de passe</h6>
-                    <input type="text" placeholder="Mot de passe" className="border-2 border-gray-300 rounded-md px-3 py-3 font-normal w-full"/>
+                    <input 
+                        type="password" 
+                        placeholder="Mot de passe" 
+                        className="border-2 border-gray-300 rounded-md px-3 py-3 font-normal w-full"
+                        value={password}
+                        onChange={handlePasswordChange}
+                    />
                     
                     <div className="flex flex-row gap-2 pt-5 text-xl">
-                        <button onClick={() => resetAll()} className="rounded-md border-2 px-6 py-3 font-bold">Annuler</button>
-                        <button type="button" onClick={() => verifAndCloseAccount()} className="bg-[#EB7C3F] rounded-md px-6 py-3 font-bold">Cloturer</button>
+                        <button onClick={() => resetAll()} className="rounded-md border-2 px-6 py-3 font-bold" disabled={loading}>
+                            Annuler
+                        </button>
+                        <button 
+                            type="button" 
+                            onClick={closeAccount} 
+                            className="bg-[#EB7C3F] rounded-md px-6 py-3 font-bold" 
+                            disabled={loading}
+                        >
+                            {loading ? "Clôture en cours..." : "Cloturer"}
+                        </button>
                     </div>
                 </div>
             )}

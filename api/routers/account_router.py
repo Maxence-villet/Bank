@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-from fastapi import Depends
+from fastapi import APIRouter, Depends, HTTPException
 from utils.auth import get_current_user
 
 from api.crud.account_crud import (
@@ -10,6 +9,10 @@ from api.crud.account_crud import (
 )
 
 from api.shemas.account import AccountCreate
+from pydantic import BaseModel
+
+class AccountDelete(BaseModel):
+    password: str
 
 router = APIRouter(prefix="/accounts", tags=["accounts"])
 
@@ -29,6 +32,8 @@ async def api_get_account_by_id(account_id: str, current_user: str = Depends(get
     return account
 
 @router.delete("/close/{account_id}", tags=["accounts"])
-async def api_close_account(account_id: str, current_user: str = Depends(get_current_user)):
-    message = close_account(account_id)
+async def api_close_account(account_id: str, delete_data: AccountDelete, current_user: str = Depends(get_current_user)):
+    message = close_account(account_id, current_user, delete_data.password)
+    if "error" in message:
+        raise HTTPException(status_code=message["status_code"], detail=message["error"])
     return message
