@@ -51,7 +51,7 @@ function addAccount() {
                                 value={accountName} onChange={handleNameChange}/>
 
                         <div className="flex flex-row gap-2 pt-5 text-xl">
-                            <button onClick={() => resetAll()} className="rounded-md border-2 px-6 py-3 font-bold">Annuler</button>
+                            <button type="button" onClick={() => resetAll()} className="rounded-md border-2 px-6 py-3 font-bold">Annuler</button>
                             <button type="button" onClick={() => PostAccount()} className="bg-[#58C5C3] rounded-md px-6 py-3 font-bold">Créer un compte</button>
                         </div>
                     </form>

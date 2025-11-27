@@ -1,3 +1,5 @@
+import CloseAccount from "./CloseAccount"
+
 interface AccountType {
     id: number,
     name: string,
@@ -16,7 +18,7 @@ function Account(account: AccountType) {
                 </div>
                 <div className="font-bold flex flex-row gap-4">
                     <button className="border-2 rounded-md px-3 py-2">Transactions</button>
-                    <button className="border-2 rounded-md px-3 py-2">Cloturer</button>
+                    <CloseAccount id={account.id}/>
                 </div>
             </div>
         </>
