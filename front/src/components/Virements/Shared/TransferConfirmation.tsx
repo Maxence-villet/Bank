@@ -43,7 +43,6 @@ const CheckCircleIcon = () => (
 );
 
 export interface TransferConfirmationProps {
-    onPrevious: () => void;
     transferAmount: string;
     beneficiaryName: string;
     steps: Array<{
@@ -52,14 +51,17 @@ export interface TransferConfirmationProps {
         isActive: boolean;
     }>;
     useCircleIcon?: boolean;
+    onNewTransfer?: () => void;
+    onDownload?: () => void; // New optional prop for PDF
 }
 
 function TransferConfirmation({
-    onPrevious,
     transferAmount,
     beneficiaryName,
     steps,
-    useCircleIcon = false
+    useCircleIcon = false,
+    onNewTransfer,
+    onDownload
 }: TransferConfirmationProps) {
     return (
         <div className="flex-1 self-stretch px-6 flex flex-col justify-start items-center gap-12">
@@ -98,15 +100,8 @@ function TransferConfirmation({
 
                 <div className="self-stretch flex flex-col justify-start items-center gap-4 pt-4">
                     <button
-                        className="self-stretch px-6 py-4 rounded-md border-2 border-neutral-300 text-emerald-950 text-lg font-bold transition-colors hover:bg-neutral-100 bg-white"
-                        onClick={onPrevious}
-                    >
-                        Précédent
-                    </button>
-
-                    <button
                         className="self-stretch px-6 py-4 rounded-md bg-teal-400 text-white text-lg font-bold inline-flex justify-center items-center transition-colors hover:bg-teal-500"
-                        // onClick={() => console.log('Télécharger reçu')}
+                        onClick={onDownload}
                     >
                         <div className='flex gap-2'>
                             <p>Télécharger un reçu</p>
@@ -116,7 +111,7 @@ function TransferConfirmation({
 
                     <button
                         className="self-stretch px-6 py-4 rounded-md border-2 border-neutral-300 text-emerald-950 text-lg font-bold inline-flex justify-center items-center transition-colors hover:bg-neutral-100 bg-white"
-                        // onClick={() => console.log('Nouveau virement')}
+                        onClick={onNewTransfer}
                     >
                         <div className='flex gap-2'>
                             <p>Nouveau virement</p>

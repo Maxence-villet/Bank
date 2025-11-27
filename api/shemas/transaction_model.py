@@ -1,6 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
+from api.entities.transaction_status import TransactionStatus
+from uuid import UUID
 
 class TransactionBaseModel(BaseModel):
     uuid_transaction: str
@@ -8,6 +10,12 @@ class TransactionBaseModel(BaseModel):
     receiver_id: str
     amount: int
     description: Optional[str] = ""
+
+class TransactionCreate(BaseModel):
+    sender_id: str
+    receiver_id: str
+    amount: int
+    description: str = ""
 
 class TransactionReadModel(TransactionBaseModel):
     uuid_transaction: str

@@ -31,13 +31,13 @@ function Step1({ selectedTransferType, onTransferTypeSelect, onNext }: Step1Prop
                         <div className="w-12 h-12 px-3.5 py-0.5 bg-teal-100 rounded-[48px] flex justify-center items-center">
                             <div className="text-black text-lg font-bold leading-6">2</div>
                         </div>
-                        <div className="justify-start text-gray-500 text-lg font-bold leading-6">Bénéficiaire</div>
+                        <div className="justify-start text-gray-500 text-lg font-bold leading-6">Choisir un compte</div>
                         <div className="w-24 border-t border-neutral-400"></div>
                     </div>
                     
                     <div className="flex justify-start items-center gap-6 flex-wrap content-center">
                         <div className="w-12 h-12 px-3.5 py-0.5 bg-teal-100 rounded-[48px] flex justify-center items-center">
-                            <div className="text-black text-lg font-bold leading-6">4</div>
+                            <div className="text-black text-lg font-bold leading-6">3</div>
                         </div>
                         <div className="justify-start text-gray-500 text-lg font-bold leading-6">Confirmation</div>
                     </div>
