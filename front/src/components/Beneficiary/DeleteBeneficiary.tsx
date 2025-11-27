@@ -1,22 +1,64 @@
-import { useState} from "react";
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 
-function DeleteBeneficiary(id : {id: number}) {
+interface DeleteBeneficiaryProps {
+    id: string;
+    onDelete?: () => void;
+}
+
+function DeleteBeneficiary({ id, onDelete }: DeleteBeneficiaryProps) {
+    const { token } = useAuth();
     const [isDeleting, setIsDeleting] = useState(false);
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    function DeleteBeneficiary() {
-        console.log(id);
-        resetAll()
-    }
+    const deleteBeneficiary = async () => {
+        setError("");
+        setLoading(true);
+
+        if (!token) {
+            setError("No authentication token");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8000/beneficiaries/beneficiary/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Beneficiary deleted:", data);
+            setIsDeleting(false);
+            onDelete?.();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to delete beneficiary");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     function resetAll() {
-        setIsDeleting(!isDeleting)
-        setError("")
+        setIsDeleting(false);
+        setError("");
     }
 
     return (
         <div>
-            <button onClick={() => resetAll()} className="border-2 rounded-md px-3 py-2 flex flex-row gap-1 items-center">
+            <button 
+                onClick={() => setIsDeleting(true)} 
+                className="border-2 rounded-md px-3 py-2 flex flex-row gap-1 items-center"
+                disabled={loading}
+            >
                 <svg width="18" height="22" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6.66658 6.66667C7.03478 6.66667 7.33325 6.96514 7.33325 7.33333V11.3333C7.33325 11.7015 7.03478 12 6.66658 12C6.2984 12 5.99992 11.7015 5.99992 11.3333V7.33333C5.99992 6.96514 6.2984 6.66667 6.66658 6.66667Z" fill="#2D3648"/>
                     <path d="M9.99992 11.3333V7.33333C9.99992 6.96514 9.70144 6.66667 9.33325 6.66667C8.96506 6.66667 8.66658 6.96514 8.66658 7.33333V11.3333C8.66658 11.7015 8.96506 12 9.33325 12C9.70144 12 9.99992 11.7015 9.99992 11.3333Z" fill="#2D3648"/>
@@ -27,14 +69,23 @@ function DeleteBeneficiary(id : {id: number}) {
             {isDeleting && (
                 <div className="px-7 py-8 border-0 rounded-2xl bg-white shadow-lg z-10 w-[700px] fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <h2 className="text-4xl font-bold mb-6 text-left">Supprimer un beneficiaire</h2>
-                    {error != "" &&(
+                    {error !== "" &&(
                         <p className="font-bold text-red-500 text-left">{ error }</p>
                     )}
                     <p className="mb-3">Vous êtes sur le point de supprimer ce beneficiaire. Êtes-vous sûr de vouloir le supprimer ?</p>
                     
                     <div className="flex flex-row gap-2 pt-5 text-xl">
-                        <button onClick={() => resetAll()} className="rounded-md border-2 px-6 py-3 font-bold">Annuler</button>
-                        <button type="button" onClick={() => DeleteBeneficiary()} className="bg-[#EB7C3F] rounded-md px-6 py-3 font-bold">Supprimer</button>
+                        <button onClick={() => resetAll()} className="rounded-md border-2 px-6 py-3 font-bold" disabled={loading}>
+                            Annuler
+                        </button>
+                        <button 
+                            type="button" 
+                            onClick={deleteBeneficiary} 
+                            className="bg-[#EB7C3F] rounded-md px-6 py-3 font-bold" 
+                            disabled={loading}
+                        >
+                            {loading ? "Suppression en cours..." : "Supprimer"}
+                        </button>
                     </div>
                 </div>
             )}
