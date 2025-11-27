@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import AllAccounts from "./components/Account/AllAccounts";
-import AddAccount from "./components/Account/AddAccount";
+import AllAccounts from "../../components/Account/AllAccounts";
+import AddAccount from "../../components/Account/AddAccount";
 
 function MyAccount() {
     const [totalAccounts, setTotalAccounts] = useState(0);
@@ -14,7 +14,7 @@ function MyAccount() {
     }, []);
 
     return (
-        <div className="bg-gray-100 py-16 pr-7 pl-16">
+        <div className="pr-7 pl-16">
             <div className="flex flex-row justify-between items-center mb-12">
                 <div className="text-left flex flex-col gap-4">
                     <h1 className="text-5xl font-bold">Mes comptes</h1>

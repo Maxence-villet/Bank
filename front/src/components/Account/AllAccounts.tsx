@@ -27,7 +27,7 @@ function AllAccounts() {
 
     return(
         <>
-            <div className="grid grid-cols-1 lg:grid-cols-2 max-w-4xl gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 max-w-6xl gap-8">
                 {accounts.map((account) => (
                     <Account 
                         key={account.id}
