@@ -25,6 +25,10 @@ const mockBeneficiaries = [
     { name: "Charles Leclerc", iban: "FR76 1122 3344 5566..." },
 ];
 
+interface Step2ExterneProps {
+    onNext: () => void;
+    onPrevious: () => void;
+}
 
 // Rendu d'une étape individuelle
 interface StepItemProps {
@@ -58,7 +62,7 @@ const Separator = ({ isActive }: { isActive: boolean }) => (
 );
 
 
-function Step2() {
+function Step2({ onNext, onPrevious }: Step2ExterneProps) {
     const [debitAccount, setDebitAccount] = useState('Compte principal');
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedBeneficiary, setSelectedBeneficiary] = useState(mockBeneficiaries[0].iban);
@@ -219,17 +223,17 @@ function Step2() {
                     </div>
                     
                     <div className="self-stretch inline-flex justify-between items-start pt-4">
-                        <button 
+                        <button
                             className="px-6 py-4 rounded-md border-2 border-neutral-300 text-emerald-950 text-lg font-bold transition-colors hover:bg-neutral-100 bg-white"
-                            // onClick={() => console.log('Précédent')} 
+                            onClick={onPrevious}
                         >
                             Précédent
                         </button>
-                        <button 
-                            className={`px-6 py-4 rounded-md text-white text-lg font-bold transition-colors 
+                        <button
+                            className={`px-6 py-4 rounded-md text-white text-lg font-bold transition-colors
                                 ${isNextButtonEnabled ? 'bg-teal-400 hover:bg-teal-500' : 'bg-teal-200 cursor-not-allowed'}`}
-                            disabled={!isNextButtonEnabled} 
-                            // onClick={() => console.log('Suivant avec bénéficiaire:', selectedBeneficiary)} 
+                            disabled={!isNextButtonEnabled}
+                            onClick={onNext}
                         >
                             Suivant
                         </button>

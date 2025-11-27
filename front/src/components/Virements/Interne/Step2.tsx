@@ -1,8 +1,11 @@
 import { useState } from 'react';
 
+interface Step2InterneProps {
+    onNext: () => void;
+    onPrevious: () => void;
+}
 
-
-function Step2() {
+function Step2({ onNext, onPrevious }: Step2InterneProps) {
     const [debitAccount, setDebitAccount] = useState('Compte principal');
     const [creditAccount, setCreditAccount] = useState('Collocation');
     const [amount, setAmount] = useState('');
@@ -141,17 +144,17 @@ function Step2() {
                     </div>
                     
                     <div className="flex flex-row justify-between self-stretch inline-flex items-start gap-4">
-                        <button 
+                        <button
                             className="px-6 py-4 rounded-md border-2 border-neutral-300 text-emerald-950 text-lg font-bold transition-colors hover:bg-neutral-100 bg-white"
-                            // onClick={() => console.log('Précédent')} 
+                            onClick={onPrevious}
                         >
                             Précédent
                         </button>
-                        <button 
-                            className={`px-6 py-4 rounded-md text-lg font-bold transition-colors 
+                        <button
+                            className={`px-6 py-4 rounded-md text-lg font-bold transition-colors
                                 ${amount ? 'bg-teal-400 hover:bg-teal-500 text-black' : 'bg-teal-200 cursor-not-allowed text-white'}`}
                             disabled={!amount}
-                            // onClick={() => console.log('Suivant avec:', { debitAccount, creditAccount, amount, label })} 
+                            onClick={onNext}
                         >
                             Suivant
                         </button>

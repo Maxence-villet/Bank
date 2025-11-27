@@ -3,9 +3,13 @@ import SendButton from "../SvgIcons/SendButton";
 import ArrowButton from "../SvgIcons/ArrowButton";
 import GlobelButton from "../SvgIcons/GlobelButton";
 
+interface Step1Props {
+    selectedTransferType: 'internal' | 'external';
+    onTransferTypeSelect: (type: 'internal' | 'external') => void;
+    onNext: () => void;
+}
 
-function Step1() {
-    const [selectedTransferType, setSelectedTransferType] = useState<'internal' | 'external'>('internal');
+function Step1({ selectedTransferType, onTransferTypeSelect, onNext }: Step1Props) {
 
     const activeIconColor = "#FFF"; 
     const activeTealColor = "#14B8A6"; 
@@ -45,9 +49,9 @@ function Step1() {
                     
                     <div className="self-stretch flex flex-col justify-start items-start gap-6">
                         
-                        <div 
-                            onClick={() => setSelectedTransferType('internal')}
-                            className={`self-stretch px-6 py-4 rounded-2xl inline-flex justify-between items-center cursor-pointer transition-all duration-200 
+                        <div
+                            onClick={() => onTransferTypeSelect('internal')}
+                            className={`self-stretch px-6 py-4 rounded-2xl inline-flex justify-between items-center cursor-pointer transition-all duration-200
                                 ${selectedTransferType === 'internal' ? 'bg-teal-400' : 'bg-slate-50 hover:bg-teal-50'}`}
                         >
                             <div className="flex justify-start items-center gap-4">
@@ -79,9 +83,9 @@ function Step1() {
                             )}
                         </div>
                         
-                        <div 
-                            onClick={() => setSelectedTransferType('external')}
-                            className={`self-stretch px-6 py-4 rounded-2xl inline-flex justify-between items-center cursor-pointer transition-all duration-200 
+                        <div
+                            onClick={() => onTransferTypeSelect('external')}
+                            className={`self-stretch px-6 py-4 rounded-2xl inline-flex justify-between items-center cursor-pointer transition-all duration-200
                                 ${selectedTransferType === 'external' ? 'bg-teal-400' : 'bg-slate-50 hover:bg-teal-50'}`}
                         >
                             <div className="flex justify-start items-center gap-4">
@@ -121,9 +125,10 @@ function Step1() {
                         >
                             Annuler
                         </button>
-                        <button 
+                        <button
                             className="px-6 py-4 bg-teal-400 rounded-md text-white text-lg font-bold transition-colors hover:bg-teal-500"
                             disabled={!selectedTransferType}
+                            onClick={onNext}
                         >
                             Suivant
                         </button>

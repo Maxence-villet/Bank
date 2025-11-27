@@ -49,8 +49,13 @@ const Separator = ({ isActive }: { isActive: boolean }) => (
 );
 
 
+interface Step3ExterneProps {
+    onNext: () => void;
+    onPrevious: () => void;
+}
+
 // Composant Step3
-function Step3() {
+function Step3({ onNext, onPrevious }: Step3ExterneProps) {
     const [debitAccount, setDebitAccount] = useState('Compte principal');
     const [amount, setAmount] = useState('');
     const [label, setLabel] = useState('');
@@ -208,17 +213,17 @@ function Step3() {
                 
                 {/* Boutons de navigation */}
                 <div className="self-stretch inline-flex justify-between items-start pt-4">
-                    <button 
+                    <button
                         className="px-6 py-4 rounded-md border-2 border-neutral-300 text-emerald-950 text-lg font-bold transition-colors hover:bg-neutral-100 bg-white"
-                        // onClick={() => console.log('Précédent')} 
+                        onClick={onPrevious}
                     >
                         Précédent
                     </button>
-                    <button 
-                        className={`px-6 py-4 rounded-md text-lg font-bold transition-colors 
+                    <button
+                        className={`px-6 py-4 rounded-md text-lg font-bold transition-colors
                             ${isNextButtonEnabled ? 'bg-teal-400 hover:bg-teal-500 text-black' : 'bg-teal-200 cursor-not-allowed text-white'}`}
-                        disabled={!isNextButtonEnabled} 
-                        // onClick={() => console.log('Suivant avec montant:', amount)} 
+                        disabled={!isNextButtonEnabled}
+                        onClick={onNext}
                     >
                         Suivant
                     </button>
