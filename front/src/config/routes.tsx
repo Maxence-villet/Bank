@@ -1,5 +1,6 @@
 import LoginPage from "../apps/LoginPage/page";
 import MyAccount from "../apps/MyAccountPage/MyAccount";
+import Transaction from "../apps/TransactionPage/Transaction";
 
 
 
@@ -19,7 +20,8 @@ export const routes = [
     {
         path: '/transaction/:accountId',
         name: 'Historique des Transactions',
-        // element : my element
+        element : <Transaction/>,
+        isMenuItem: true,
         needNavbar: true
     },
     {
