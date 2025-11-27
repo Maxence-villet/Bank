@@ -62,8 +62,11 @@ function RegisterForm() {
 
     
     return (
-        <div className="flex h-screen w-full bg-white overflow-hidden font-sans">
-            <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 lg:px-24">
+        // 1. Suppression de overflow-hidden du conteneur principal
+        <div className="flex h-screen w-full bg-white font-sans">
+            {/* 2. Ajout de h-screen et overflow-y-auto à la div de gauche
+                 3. Remplacement de justify-center par items-start pour un défilement propre depuis le haut */}
+            <div className="w-full md:w-1/2 flex flex-col items-start px-8 md:px-16 lg:px-24 py-10 h-screen overflow-y-auto">
                 <div className="w-full max-w-md mx-auto">
                     <div className="flex items-center gap-3 mb-12">
                         <div className="relative w-10 h-10">
@@ -101,20 +104,20 @@ function RegisterForm() {
                         <span className="text-4xl font-bold text-gray-900 ">FINVO</span>
                     </div>
                     <h1 className="text-3xl font-extrabold text-gray-900 mb-4">
-                        Créez votre compte FINVO
+                        Créez votre compte
                     </h1>
                     <h2 className="text-gray-600 text-lg mb-8 font-medium">
-                        Rejoignez-nous en quelques étapes simples.
+                        Rejoignez des milliers d'utilisateurs
                     </h2>
                     
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                            <span className="block sm:inline">⚠️ {error}</span>
+                            <span className="block sm:inline"> {error}</span>
                         </div>
                     )}
                     {success && (
                         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                            <span className="block sm:inline">✅ {success}</span>
+                            <span className="block sm:inline"> {success}</span>
                         </div>
                     )}
 
@@ -208,9 +211,18 @@ function RegisterForm() {
                     alt="Illustration Finance"
                     className="absolute inset-0 w-full h-full object-cover opacity-80"
                 />
+                <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-10 text-white">
+                <h3 className="text-5xl font-extrabold mb-4 leading-tight">
+                    La banque,<br />simplifiée
+                </h3>
+                <p className="text-lg max-w-sm">
+                    Dashboard tout en un pour le paiement et suivre vos transactions
+                </p>
             </div>
-
+            </div>
         </div>
+
+        
     );
 };
 
