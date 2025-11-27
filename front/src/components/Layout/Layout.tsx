@@ -3,6 +3,7 @@ import Header from "../Header/Header";
 import { useState, useMemo } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { routes } from "../../config/routes";
+import { ButtonContextProvider } from "../Sidebar/ButtonContext";
 
 
 function Layout() {
@@ -28,9 +29,13 @@ function Layout() {
         <>
         {navbar === true ?
             <>
+            <ButtonContextProvider>
                 <Header onClickBurger={handleMenuClick}/>
                 <Sidebar isOpen={isOpen}/> 
-                 <main className={`h-[calc(100vh-60px)] ml-[${sidebarWidth}] ${contentWidthClass} overflow-auto transition-all duration-300 ease-in-out pt-[60px]`}>
+                 <main className={`h-[calc(100vh-60px)] 
+                    ${isOpen ? 'ml-[250px]' : 'ml-[50px]'} 
+                    ${contentWidthClass} 
+                    overflow-auto transition-all duration-300 ease-in-out pt-[60px] bg-[#F7FCFC]`}>
 
                     <Routes>
                         {routes.map((route, index) => {
@@ -40,6 +45,7 @@ function Layout() {
                         })}
                     </Routes>
                 </main>
+                </ButtonContextProvider>
             </> :  
             <>
             <main>

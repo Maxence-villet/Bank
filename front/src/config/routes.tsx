@@ -1,5 +1,6 @@
 import LoginPage from "../apps/LoginPage/page";
 import RegisterForm from "../components/Register/Register";
+import MyAccount from "../apps/MyAccountPage/MyAccount";
 
 
 
@@ -11,8 +12,10 @@ export const routes = [
         needNavbar: true
     },
     {
-        path: '/account',
+        path: '/comptes',
         name: 'Mes comptes',
+        element: <MyAccount />,
+        isMenuItem: true,
         needNavbar: true
     },
     {
