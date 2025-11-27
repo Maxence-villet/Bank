@@ -29,7 +29,7 @@ export const routes = [
         element : <Transaction/>,
         isMenuItem: true,
         needNavbar: true,
-        needAuth: true
+        needAuth: false
     },
     {
         path: '/transactions/details/:transactionId',

@@ -9,7 +9,7 @@ type CardProps = {
 const Card = ({title, subtitle, isGain, price}: CardProps) => {
   const pricestr:string = price.toFixed(2).replace('.', ',')
   return(
-<section className="flex items-center gap-[24px] max-w-[866px] h-[50px]">
+<section className="flex items-center gap-[24px] h-[50px]">
   {/* ICON */}
   <Icon
     bgColor={"#8C9C9C"}
