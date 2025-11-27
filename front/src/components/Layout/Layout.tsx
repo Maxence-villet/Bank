@@ -3,6 +3,7 @@ import Header from "../Header/Header";
 import { useState, useMemo } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { routes } from "../../config/routes";
+import { ButtonContextProvider } from "../Sidebar/ButtonContext";
 
 
 function Layout() {
@@ -28,6 +29,7 @@ function Layout() {
         <>
         {navbar === true ?
             <>
+            <ButtonContextProvider>
                 <Header onClickBurger={handleMenuClick}/>
                 <Sidebar isOpen={isOpen}/> 
                  <main className={`h-[calc(100vh-60px)] 
@@ -43,6 +45,7 @@ function Layout() {
                         })}
                     </Routes>
                 </main>
+                </ButtonContextProvider>
             </> :  
             <>
             <main>
