@@ -30,7 +30,10 @@ function Layout() {
             <>
                 <Header onClickBurger={handleMenuClick}/>
                 <Sidebar isOpen={isOpen}/> 
-                 <main className={`h-[calc(100vh-60px)] ml-[${sidebarWidth}] ${contentWidthClass} overflow-auto transition-all duration-300 ease-in-out pt-[60px] bg-[#F7FCFC]`}>
+                 <main className={`h-[calc(100vh-60px)] 
+                    ${isOpen ? 'ml-[250px]' : 'ml-[50px]'} 
+                    ${contentWidthClass} 
+                    overflow-auto transition-all duration-300 ease-in-out pt-[60px] bg-[#F7FCFC]`}>
 
                     <Routes>
                         {routes.map((route, index) => {
