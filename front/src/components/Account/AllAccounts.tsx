@@ -13,7 +13,7 @@ interface AccountType {
 function AllAccounts() {
     const { token } = useAuth();
 
-    const { data: Allaccounts = [] } = useQuery<AccountType[]>({
+    const { data: accounts = [] } = useQuery<AccountType[]>({
       queryKey: ['accounts'],
       queryFn: async () => {
         if (!token) throw new Error('No token');
@@ -30,12 +30,12 @@ function AllAccounts() {
       enabled: !!token,
     });
 
-    console.log(Allaccounts)
+    console.log(accounts)
 
     return(
         <>
             <div className="grid grid-cols-1 lg:grid-cols-2 max-w-5xl gap-8">
-                {Allaccounts.map((account) => (
+                {accounts.map((account) => (
                     <Account 
                         key={account.id}
                         id={account.id}
