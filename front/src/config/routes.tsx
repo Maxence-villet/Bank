@@ -1,4 +1,5 @@
 import LoginPage from "../apps/LoginPage/page";
+import RegisterForm from "../components/Register/Register";
 
 
 
@@ -69,6 +70,7 @@ export const routes = [
     {
         path: '/inscription',
         name: 'Inscription',
+        element : <RegisterForm/>,
         needNavbar: false
     }
 ]

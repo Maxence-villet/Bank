@@ -1,6 +1,6 @@
-import sideIllustration from '../assets/side-illustration.png'; 
+import sideIllustration from '../../assets/side-illustration.png'; 
 
-function LoginForm() {
+function RegisterForm() {
   return (
 
     <div className="flex h-screen w-full bg-white overflow-hidden font-sans">
@@ -107,7 +107,7 @@ function LoginForm() {
               </span>
 
               <span className="ml-4 text-sm text-gray-400">
-                  <a href="login.tsx" className="text-teal-500">Se connecter</a>
+                  <a href="/connexion" className="text-teal-500">Se connecter</a>
               </span>
           </form>
 
@@ -134,4 +134,4 @@ function LoginForm() {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

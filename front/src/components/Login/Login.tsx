@@ -1,6 +1,7 @@
 import sideIllustration from '../../assets/side-illustration.png'; 
 
 function LoginForm() {
+
   return (
 
     <div className="flex h-screen w-full bg-white overflow-hidden font-sans">
@@ -100,7 +101,7 @@ function LoginForm() {
               </span>
 
               <span className="ml-4 text-sm text-gray-400">
-                  <a href="/open-account" className="text-teal-500">Ouvrez un compte</a>
+                  <a href="/inscription" className="text-teal-500">Ouvrez un compte</a>
               </span>
           </form>
 
