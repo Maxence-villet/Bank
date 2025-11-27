@@ -26,7 +26,6 @@ function RegisterForm() {
         }
 
         try {
-            // 🛑 MODIFICATION ICI : Création du corps JSON
             const requestBody = {
                 first_name: firstName, 
                 last_name: lastName,
@@ -34,21 +33,17 @@ function RegisterForm() {
                 password: password,
             };
 
-            const response = await fetch('http://localhost:5432/user/register', { 
+            const response = await fetch('http://localhost:8000/user/register', { 
                 method: 'POST',
                 headers: {
-                    // 🛑 CHANGEMENT DU HEADER : application/json
                     'Content-Type': 'application/json',
                 },
-                // 🛑 CHANGEMENT DU BODY : Envoi du corps JSON stringifié
                 body: JSON.stringify(requestBody), 
             });
 
             const data = await response.json();
 
             if (!response.ok) {
-                // Tente d'extraire le message d'erreur du backend
-                // data.detail est le format standard pour les erreurs FastAPI (y compris la 422 si le Pydantic n'est pas bon)
                 const errorMessage = data.message || data.detail?.[0]?.msg || JSON.stringify(data) || 'Erreur lors de l\'inscription.';
                 throw new Error(errorMessage);
             }
@@ -70,12 +65,8 @@ function RegisterForm() {
         <div className="flex h-screen w-full bg-white overflow-hidden font-sans">
             <div className="w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 lg:px-24">
                 <div className="w-full max-w-md mx-auto">
-                    
-                    {/* Contenu Header/Logo */}
                     <div className="flex items-center gap-3 mb-12">
-                         {/* Placeholder for SVG Logo */}
                         <div className="relative w-10 h-10">
-                            {/* J'ai inséré le SVG complet ici pour assurer la compilation */}
                             <svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g filter="url(#filter0_i_1387_84)">
                                 <path
@@ -211,7 +202,6 @@ function RegisterForm() {
                 </div>
             </div>
 
-            {/* Illustration Side */}
             <div className="hidden md:block md:w-1/2 relative bg-teal-900">
                 <img 
                     src={sideIllustration}
