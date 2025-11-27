@@ -1,17 +1,62 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
 import AddBeneficiary from "../../components/Beneficiary/AddBeneficiary";
 import AllBeneficiary from "../../components/Beneficiary/AllBeneficiary";
 
-function Beneficiary() {
-    const [totalAccounts, setTotalAccounts] = useState(0);
+interface BeneficiaryType {
+    id: string;
+    name: string;
+    iban: string;
+}
 
-    function getTotal () {
-        setTotalAccounts(1243.45)
-    }
+function Beneficiary() {
+    const { token } = useAuth();
+    const [beneficiaries, setBeneficiaries] = useState<BeneficiaryType[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    const fetchBeneficiaries = async () => {
+        if (!token) {
+            setError("No authentication token");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError("");
+            const response = await fetch("http://localhost:8000/beneficiaries/user", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const mappedBeneficiaries = data.map((b: any) => ({
+                id: b.id,
+                name: `${b.first_name} ${b.last_name}`,
+                iban: b.iban,
+            }));
+            setBeneficiaries(mappedBeneficiaries);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to fetch beneficiaries");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        getTotal();
-    }, []);
+        fetchBeneficiaries();
+    }, [token]);
+
+    if (loading) return <div>Loading beneficiaries...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div className="pr-7 pl-16">
@@ -19,13 +64,13 @@ function Beneficiary() {
                 <div className="text-left flex flex-col gap-4">
                     <h1 className="text-5xl font-bold">Mes beneficiaires</h1>
                     <div className="text-xl flex flex-column gap-1 text-gray-400">
-                        <p>Totale des actifs:</p>
-                        <h3 className="font-bold">{totalAccounts}€</h3>   
+                        <p>Nombre de bénéficiaires:</p>
+                        <h3 className="font-bold">{beneficiaries.length}</h3>   
                     </div>
                 </div>
-                <AddBeneficiary />
+                <AddBeneficiary onAdd={fetchBeneficiaries} />
             </div>
-            <AllBeneficiary />
+            <AllBeneficiary beneficiaries={beneficiaries} />
         </div>
     );
 }

@@ -1,9 +1,8 @@
 import DeleteBeneficiary from "./DeleteBeneficiary";
 import "../../assets/CreditCardButton.svg"
 
-
 interface BeneficiaryType {
-    id: number,
+    id: string,
     name: string,
     iban: string,
 }
