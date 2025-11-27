@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Account from "../Account/Account";
+import { useAuth } from "../../contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
 
 interface AccountType {
     id: number,
@@ -9,26 +11,31 @@ interface AccountType {
 }
 
 function AllAccounts() {
-    const [accounts, setAccounts] = useState<AccountType[]>([]);
+    const { token } = useAuth();
 
-    function getAccounts () {
-        const nouveauxComptes = [
-            { id: 1, name: "Compte Chèques", amount: 1500, iban: "FR76 7003 6010 5678" },
-            { id: 2, name: "Compte Épargne", amount: 5000, iban: "FR76 7003 6010 1234" },
-            { id: 3, name: "Compte Investissement", amount: 12000, iban: "FR76 7003 6010 9876" },
-        ];
+    const { data: Allaccounts = [] } = useQuery<AccountType[]>({
+      queryKey: ['accounts'],
+      queryFn: async () => {
+        if (!token) throw new Error('No token');
+        const response = await fetch('http://localhost:8000/accounts/user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch accounts');
+        }
+        return response.json();
+      },
+      enabled: !!token,
+    });
 
-        setAccounts(nouveauxComptes)
-    }
-
-    useEffect(() => {
-        getAccounts();
-    }, []);
+    console.log(Allaccounts)
 
     return(
         <>
             <div className="grid grid-cols-1 lg:grid-cols-2 max-w-5xl gap-8">
-                {accounts.map((account) => (
+                {Allaccounts.map((account) => (
                     <Account 
                         key={account.id}
                         id={account.id}
