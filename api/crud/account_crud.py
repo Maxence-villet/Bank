@@ -52,7 +52,7 @@ def close_account(account_id: str) -> dict:
         db.commit()
         return {"message": "Account closed successfully. Remaining funds transferred to current account.", "status_code": 200}
 
-def open_account(user_id: str) -> dict:
+def open_account(user_id: str, name: str) -> dict:
     user = get_user_by_id(user_id)
     if user is None:
         return {"error": "User not found.", "status_code": 404}
@@ -60,21 +60,20 @@ def open_account(user_id: str) -> dict:
         return {"error": "Maximum number of accounts reached.", "status_code": 403}
 
 
-    account = Account(user.id)
+    account = Account(user.id, name=name)
     with Session(engine) as db:
         db.add(account)
         db.commit()
         db.refresh(account)
         return {"message": "Account opened successfully.", "status_code": 200}
     
-
 def open_current_account(user_id: str) -> dict:
     user = get_user_by_id(user_id)
     if user is None:
         return {"error": "User not found.", "status_code": 404}
     
     if get_number_of_accounts(user.id) > 0:
-        return {"error": "User already has an current account.", "status_code": 403}
+        return {"error": "User already has a current account.", "status_code": 403}
 
     account = CurrentAccount.create(user.id)
     with Session(engine) as db:

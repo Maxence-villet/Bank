@@ -4,16 +4,17 @@ from uuid import uuid4
 from sqlmodel import Field, SQLModel
 from utils.iban_generator import iban_generator
 from models.beneficiary import Beneficiary
-from typing import List
+from typing import List, Optional
 
 class Account(SQLModel, table=True):
-    id: str = Field(default_factory="O" + str(uuid4()), primary_key=True)
+    id: str = Field(default_factory=lambda: "O" + str(uuid4()), primary_key=True)
     user_id: str = Field(foreign_key="user.id")
     amount: int = Field(default=0)
-    iban: str = Field(default=iban_generator())
-    open_at: datetime = Field(default=datetime.now)
+    iban: str = Field(default_factory=iban_generator)
+    open_at: datetime = Field(default_factory=datetime.now)
+    name: Optional[str] = Field(default=None, sa_column_kwargs={"nullable": True})
 
-    def __init__(self, user_id: str, id: str = None):
+    def __init__(self, user_id: str, id: str = None, name: str = None):
         if id is None:
             id = "O" + str(uuid4())
         self.id = id
@@ -21,7 +22,7 @@ class Account(SQLModel, table=True):
         self.amount = 0
         self.iban = iban_generator()
         self.open_at = datetime.now()
-
+        self.name = name
 
     @property
     def is_current_account(self) -> bool:

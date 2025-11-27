@@ -9,11 +9,13 @@ from api.crud.account_crud import (
     close_account,
 )
 
+from api.shemas.account import AccountCreate
+
 router = APIRouter(prefix="/accounts", tags=["accounts"])
 
-@router.post("/open")
-async def api_open_account(current_user: str = Depends(get_current_user)):
-    message = open_account(current_user)
+@router.post("/open", summary="Ouvrir un nouveau compte ordinaire", description="Crée un nouveau compte pour l'utilisateur connecté. Fournir un nom dans le corps de la requête.")
+async def api_open_account(account_data: AccountCreate, current_user: str = Depends(get_current_user)):
+    message = open_account(current_user, account_data.name)
     return message
 
 @router.get("/user", tags=["accounts"])
