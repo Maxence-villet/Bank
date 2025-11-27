@@ -29,7 +29,7 @@ function addAccount() {
                 if (errorData.status_code != 200) {
                     setError("La limite de compte a été atteinte")
                 } else [
-                    queryClient.invalidateQueries({ queryKey: ['accounts'] });
+                    queryClient.invalidateQueries({ queryKey: ['accounts'] }),
                     resetAll()
                 ]
 
