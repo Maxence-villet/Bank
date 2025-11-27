@@ -1,5 +1,6 @@
 import LoginPage from "../apps/LoginPage/page";
 import MyAccount from "../apps/MyAccountPage/MyAccount";
+import Beneficiary from "../apps/BeneficiaryPage/Beneficiary";
 
 
 
@@ -11,7 +12,7 @@ export const routes = [
         needNavbar: true
     },
     {
-        path: '/account',
+        path: '/compte',
         name: 'Mes comptes',
         element: <MyAccount />,
         needNavbar: true
@@ -31,7 +32,7 @@ export const routes = [
     {
         path: '/beneficiaires',
         name: 'Mes bénéficiaires',
-        // element : my element
+        element : <Beneficiary />,
         isMenuItem: true,
         needNavbar: true
     },
