@@ -1,6 +1,5 @@
 import { useState } from "react";
 import CardGenerator from "./cardGenerator";
-import { useTransactionsPerAccount } from "./request/getTransaction";
 import { useAllTransactions } from "./request/getAllTransaction";
 
 interface CardData {
@@ -25,6 +24,7 @@ const cards2: CardData[] =  [
 
 const TransactionPagination = ({filter}:{filter: 'transactions' | 'recettes' | 'depenses'}) => {
     const { data: fetchedCards } = useAllTransactions();
+    console.log("Fetched Cards:", fetchedCards);
     const cards: CardData[] = fetchedCards || cards2; 
     
     const [currentPage, setCurrentPage] = useState(1);
