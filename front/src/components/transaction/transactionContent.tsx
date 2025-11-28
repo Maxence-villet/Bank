@@ -6,7 +6,11 @@ const  TransactionContent = () => {
     return (
         <div className="flex flex-row justify-between mt-[40px] h-full">
             <TransactionPagination/>
-            <ShowList/>
+            <ShowList
+                Revenus={342}
+                Sortie={876}
+                Transactions={23}
+            />
         </div>   
 
     )

@@ -1,18 +1,14 @@
-import Icon from "../icons/icon";
-
 type ShowStatProps = {
     title: string;
     stat: number;
     isPriceGain: boolean;
+    icon?: React.ReactNode;
 }
-const ShowStat = ({title,stat,isPriceGain}:ShowStatProps) => {
+const ShowStat:React.FC<ShowStatProps> = ({title,stat,isPriceGain,icon}:ShowStatProps) => {
     return (
         <div style={{ padding: '16px 24px 16px 24px' }} className="w-[376px] h-[112px] flex flex-row rounder-[16px]  rounded-[16px] bg-white">
             <div className="size-fit-content">
-                <Icon
-                    bgColor={isPriceGain ? "#9ff8f3ff" : "#f3a79aff"}
-                    iconName={isPriceGain ? "Arrow" : "Shop"}
-                />
+                {icon}
             </div>
             <div className="text-[16px] pl-[16px]">
                 <h3>{title}</h3>

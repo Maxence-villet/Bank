@@ -61,30 +61,52 @@ const TransactionPagination = () => {
                         <button
                             onClick={goToPreviousPage}
                             disabled={currentPage === 1}
-                            className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 py-2 h-[40px] bg-teal-100 text-teal-400 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" // Ajout de flex pour centrer l'icône
                         >
-                            &lt;
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2" // Épaisseur de la bordure comme border-2
+                                stroke="currentColor"
+                                className="w-5 h-5" // Taille de l'icône, équivalente à votre div de 20x20px
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                            </svg>
                         </button>
                         {pageNumbers.map(number => (
                             <button
                                 key={number}
                                 onClick={() => setCurrentPage(number)}
-                                className={`px-4 py-2 rounded-md ${
-                                    currentPage === number
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-gray-200 hover:bg-gray-300"
-                                }`}
+                                className={`
+                                    py-3 h-[40px] rounded-[5px] inline-flex justify-center items-center gap-2 font-medium leading-5 text-[14px]  font-["Inter"]
+                                    ${
+                                        currentPage === number
+                                            ? "bg-teal-400 text-white" // Style actif de votre div
+                                            : " text-gray-700 hover:bg-gray-300" // Style inactif, couleur de texte pour lisibilité
+                                    }
+                                    w-11 text-center text-sm font-medium font-['Inter'] leading-5
+                                `}
                             >
-                                {number}
+                                {String(number).padStart(2, '0')} {/* Format "01", "02", etc. */}
                             </button>
                         ))}
                         
                         <button
                             onClick={goToNextPage}
                             disabled={currentPage === pageCount}
-                            className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 h-[40px] py-2 bg-teal-100 text-teal-400 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
-                            &gt;
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="2"
+                                stroke="currentColor"
+                                className="w-5 h-5"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                            </svg>
                         </button>
                     </div>
                 )}
