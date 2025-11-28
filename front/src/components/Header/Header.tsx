@@ -2,6 +2,7 @@ import BurgerButton from '../../assets/BurgerButton.png';
 import Logo from '../../assets/Logo.png';
 import SearchButton from '../../assets/SearchButton.png';
 import IconContainer from '../../assets/IconContainer.png';
+import { Link } from 'react-router-dom';
 
 interface HeaderProps {
     onClickBurger: () => void;
@@ -23,7 +24,9 @@ function Header({ onClickBurger }: HeaderProps) {
                         <input type="text" placeholder="Rechercher une transaction" className="placeholder-black border-none outline-none text-xs w-full"/>
                         <img src={SearchButton} alt="SearchButton"/>
                     </div>
-                    <img src={IconContainer} alt="IconContainer" />
+                    <Link className='w-[35px]' to="/profil">
+                        <img src={IconContainer} alt="IconContainer" />
+                    </Link>
                 </div>
             </div>
         </header>
