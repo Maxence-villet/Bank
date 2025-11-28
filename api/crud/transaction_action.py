@@ -180,10 +180,16 @@ def  get_transactions(account_id: str) -> List[TransactionBaseModel]:
                 sender_id=tx_model.sender_id,
                 receiver_id=tx_model.receiver_id,
                 amount=tx_model.amount,
-                description=tx_model.description
+                description=tx_model.description,
+                peding_at=tx_model.pending_at,
+                completed_at=tx_model.completed_at,
+                failed_at=tx_model.failed_at,
+                cancelled_at=tx_model.cancelled_at,
+                status=tx_model.status, 
             )
             for tx_model in tx_models
         ]
+        print(f"Transactions pour le compte {account_id} : {tx_models}")
         return transactions
 
 
