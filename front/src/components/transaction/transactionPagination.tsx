@@ -21,7 +21,7 @@ const cards: CardData[] =  [
     { title: "Salaire", subtitle: "Virement", price: 2100, isGain: true, date: "22/11/2025", status: "terminé" },
 ];
 
-const TransactionPagination = () => {
+const TransactionPagination = ({filter}:{filter: 'transactions' | 'recettes' | 'depenses'}) => {
     // État pour suivre la page actuelle
     const [currentPage, setCurrentPage] = useState(1);
     
@@ -54,22 +54,21 @@ const TransactionPagination = () => {
         <div style={{ padding: "24px" }} className="flex flex-row justify-between w-full rounded-[16px] bg-white ">
             <div className="flex flex-col w-full   ">
                 <CardGenerator
-                    cards={currentCards}
-                />
+                    cards={currentCards} activeTab={filter}                />
                 {cards.length > cardsPerPage && (
                     <div className="flex justify-center items-center mt-6 space-x-2">
                         <button
                             onClick={goToPreviousPage}
                             disabled={currentPage === 1}
-                            className="px-4 py-2 h-[40px] bg-teal-100 text-teal-400 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" // Ajout de flex pour centrer l'icône
+                            className="px-4 py-2 bg-teal-100 text-teal-400 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center" // Ajout de flex pour centrer l'icône
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
-                                strokeWidth="2" // Épaisseur de la bordure comme border-2
+                                strokeWidth="2" 
                                 stroke="currentColor"
-                                className="w-5 h-5" // Taille de l'icône, équivalente à votre div de 20x20px
+                                className="w-5 h-5" 
                             >
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                             </svg>
@@ -79,7 +78,7 @@ const TransactionPagination = () => {
                                 key={number}
                                 onClick={() => setCurrentPage(number)}
                                 className={`
-                                    py-3 h-[40px] rounded-[5px] inline-flex justify-center items-center gap-2 font-medium leading-5 text-[14px]  font-["Inter"]
+                                    py-3 rounded-[5px] inline-flex justify-center items-center gap-2 font-medium leading-5 text-[14px]  font-["Inter']
                                     ${
                                         currentPage === number
                                             ? "bg-teal-400 text-white" // Style actif de votre div
@@ -95,7 +94,7 @@ const TransactionPagination = () => {
                         <button
                             onClick={goToNextPage}
                             disabled={currentPage === pageCount}
-                            className="px-4 h-[40px] py-2 bg-teal-100 text-teal-400 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                            className="px-4 py-2 bg-teal-100 text-teal-400 rounded-md hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

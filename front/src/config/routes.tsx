@@ -24,7 +24,7 @@ export const routes = [
         needAuth: true
     },
     {
-        path: '/transaction/:accountId',
+        path: '/transactions',
         name: 'Historique des Transactions',
         element : <Transaction/>,
         isMenuItem: true,
