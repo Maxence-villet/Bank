@@ -1,5 +1,7 @@
 import { useState } from "react";
 import CardGenerator from "./cardGenerator";
+import { useTransactionsPerAccount } from "./request/getTransaction";
+import { useAllTransactions } from "./request/getAllTransaction";
 
 interface CardData {
   title: string;
@@ -10,7 +12,7 @@ interface CardData {
   status: "en cours" | "terminé" | string;
 }
 
-const cards: CardData[] =  [
+const cards2: CardData[] =  [
     { title: "Achat PayPal", subtitle: "Virement", price: 0, isGain: false, date: "26/11/2025", status: "en cours" },
     { title: "Netflix", subtitle: "Abonnement", price: 12.99, isGain: false, date: "25/11/2025", status: "terminé" },
     { title: "Amazon", subtitle: "Commande", price: 42.5,  isGain: true ,date: "25/11/2025", status: "terminé" },
@@ -22,14 +24,12 @@ const cards: CardData[] =  [
 ];
 
 const TransactionPagination = ({filter}:{filter: 'transactions' | 'recettes' | 'depenses'}) => {
-    // État pour suivre la page actuelle
+    const { data: fetchedCards } = useAllTransactions();
+    const cards: CardData[] = fetchedCards || cards2; 
+    
     const [currentPage, setCurrentPage] = useState(1);
     
-    // Définir le nombre de cartes à afficher par page en fonction de la hauteur disponible
-    // Vous pouvez ajuster cette valeur
     const cardsPerPage = 5;
-
-    // Calculer les cartes à afficher sur la page actuelle
     const indexOfLastCard = currentPage * cardsPerPage;
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
     const currentCards = cards.slice(indexOfFirstCard, indexOfLastCard);
@@ -54,7 +54,7 @@ const TransactionPagination = ({filter}:{filter: 'transactions' | 'recettes' | '
         <div style={{ padding: "24px" }} className="flex flex-row justify-between w-full rounded-[16px] bg-white ">
             <div className="flex flex-col w-full   ">
                 <CardGenerator
-                    cards={currentCards} activeTab={filter}                />
+                    cards={currentCards} activeTab={filter}  />
                 {cards.length > cardsPerPage && (
                     <div className="flex justify-center items-center mt-6 space-x-2">
                         <button
