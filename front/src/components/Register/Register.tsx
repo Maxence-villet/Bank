@@ -62,10 +62,7 @@ function RegisterForm() {
 
     
     return (
-        // 1. Suppression de overflow-hidden du conteneur principal
         <div className="flex h-screen w-full bg-white font-sans">
-            {/* 2. Ajout de h-screen et overflow-y-auto à la div de gauche
-                 3. Remplacement de justify-center par items-start pour un défilement propre depuis le haut */}
             <div className="w-full md:w-1/2 flex flex-col items-start px-8 md:px-16 lg:px-24 py-10 h-screen overflow-y-auto">
                 <div className="w-full max-w-md mx-auto">
                     <div className="flex items-center gap-3 mb-12">
