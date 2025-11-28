@@ -24,3 +24,7 @@ class UserPublic(SQLModel):
     email: str
     register_at: datetime
         
+class ChangePassword(BaseModel):
+    current_password: str
+    new_password: str
+        
