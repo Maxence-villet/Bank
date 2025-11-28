@@ -1,16 +1,41 @@
 import { useState, type SetStateAction } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 function addAccount() {
     const [isAdding, setIsAdding] = useState(false);
     const [error, setError] = useState("");
     const [accountType, setAccountType] = useState("Compte Courant");
     const [accountName, setAccountName] = useState("");
+    const { token } = useAuth();
+    const queryClient = useQueryClient();
 
-    function PostAccount() {
-        if (accountName == "") {
+    async function PostAccount() {
+        if (accountName.trim() == "") {
             setError("Le nom du compte ne peut pas être vide")
         } else {
-            resetAll()
+            try {
+                const response = await fetch('http://localhost:8000/accounts/open', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({"name": accountName})
+                });
+                
+                const errorData = await response.json();
+
+                if (errorData.status_code != 200) {
+                    setError("La limite de compte a été atteinte")
+                } else [
+                    queryClient.invalidateQueries({ queryKey: ['accounts'] }),
+                    resetAll()
+                ]
+
+            } catch {
+                setError("Erreur lors de la création de compte");
+            }
         }
     }
 

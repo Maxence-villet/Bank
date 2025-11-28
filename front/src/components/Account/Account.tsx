@@ -1,22 +1,22 @@
 import CloseAccount from "./CloseAccount"
 import "../../assets/CreditCardButton.svg"
 
-
 interface AccountType {
-    id: number,
+    id: string,
     name: string,
     amount: number,
     iban: string,
+    onClose?: () => void;
 }
 
-function Account(account: AccountType) {
+function Account({ id, name, amount, iban, onClose }: AccountType) {
     return (
         <>
             <div className="text-left flex flex-col gap-6 background-white border-0 rounded-2xl p-6 bg-white max-w-2xl">
-                <h2 className="text-xl">{account.name}</h2>
+                <h2 className="text-xl">{name}</h2>
                 <div className="flex flex-column justify-between">
-                    <p className="font-bold">{account.amount}€</p>
-                    <p className="text-gray-400">{account.iban}...</p>
+                    <p className="font-bold">{amount.toFixed(2)}€</p>
+                    <p className="text-gray-400">{iban}...</p>
                 </div>
                 <div className="font-bold flex flex-row gap-4">
                     <button className="border-2 rounded-md px-3 py-2 flex flex-row gap-1 items-center">
@@ -29,8 +29,8 @@ function Account(account: AccountType) {
                             <path d="M1.99992 11.3333C1.63173 11.3333 1.33325 11.6318 1.33325 12C1.33325 12.3682 1.63173 12.6667 1.99992 12.6667H2.00659C2.37478 12.6667 2.67325 12.3682 2.67325 12C2.67325 11.6318 2.37478 11.3333 2.00659 11.3333H1.99992Z" fill="#2D3648"/>
                         </svg>
                         Transactions
-                        </button>
-                    <CloseAccount id={account.id}/>
+                    </button>
+                    <CloseAccount id={id} onClose={onClose} />
                 </div>
             </div>
         </>
