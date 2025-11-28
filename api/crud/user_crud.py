@@ -3,6 +3,7 @@ from api.shemas.user import UserPublic
 from models.user import User
 from sqlmodel import Session, select
 from db.database import engine
+from passlib.context import CryptContext
 
 def register_user(first_name: str, last_name: str, email: str, password: str) -> dict:
     with Session(engine) as db:
@@ -59,3 +60,26 @@ def get_user_by_email(email: str) -> Optional[User]:
         statement = select(User).where(User.email == email)
         user = db.exec(statement).first()
         return user
+
+def change_password(user_id: str, current_password: str, new_password: str) -> dict:
+    from sqlmodel import Session
+    from db.database import engine
+    from models.user import User
+
+    user = get_user_by_id(user_id)
+    if not user:
+        return {"error": "User not found", "status_code": 404}
+
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+    if not pwd_context.verify(current_password, user.password):
+        return {"error": "Current password incorrect", "status_code": 400}
+
+    user.password = pwd_context.hash(new_password)
+
+    with Session(engine) as db:
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+    return {"message": "Password changed successfully", "status_code": 200}

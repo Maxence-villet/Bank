@@ -1,7 +1,7 @@
 import LoginPage from "../apps/LoginPage/page";
 import RegisterForm from "../components/Register/Register";
-import MyAccount from "../apps/MyAccountPage/MyAccount";
-import Beneficiary from "../apps/BeneficiaryPage/Beneficiary";
+import MyAccount from "../apps/MyAccountPage/page";
+import Beneficiary from "../apps/BeneficiaryPage/page";
 import VirementPage from "../apps/VirementPage/page";
 import Transaction from "../apps/TransactionPage/Transaction";
 
@@ -49,7 +49,7 @@ export const routes = [
     {
         path: '/profil',
         name: 'Mon Profile',
-        // element : my element
+        element : <ProfilPage />,
         isMenuItem: true,
         needNavbar: true,
         needAuth: true
