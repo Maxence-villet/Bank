@@ -32,34 +32,22 @@ function Step2({
 
     const availableDebitAccounts = accounts.map(acc => {
         const balanceStr = formatBalance(acc.amount);
-        if (acc.id.startsWith('C')) {
-            return {
-                id: acc.id,
-                display: `compte courant | Balance: ${balanceStr}`
-            };
-        } else {
-            return {
-                id: acc.id,
-                display: `Compte se terminant par ${acc.iban.slice(-4)} | Balance: ${balanceStr}`
-            };
-        }
+        const accountName = acc.name || (acc.id.startsWith('C') ? 'compte courant' : `Compte se terminant par ${acc.iban.slice(-4)}`);
+        return {
+            id: acc.id,
+            display: `${accountName} | Balance: ${balanceStr}`
+        };
     });
 
     const availableCreditAccounts = accounts
         .filter(acc => acc.id !== debitAccountId)
         .map(acc => {
             const balanceStr = formatBalance(acc.amount);
-            if (acc.id.startsWith('C')) {
-                return {
-                    id: acc.id,
-                    display: `compte courant | Balance: ${balanceStr}`
-                };
-            } else {
-                return {
-                    id: acc.id,
-                    display: `Compte se terminant par ${acc.iban.slice(-4)} | Balance: ${balanceStr}`
-                };
-            }
+            const accountName = acc.name || (acc.id.startsWith('C') ? 'compte courant' : `Compte se terminant par ${acc.iban.slice(-4)}`);
+            return {
+                id: acc.id,
+                display: `${accountName} | Balance: ${balanceStr}`
+            };
         });
 
     const isValid = amount > 0 && debitAccountId && creditAccountId && debitAccountId !== creditAccountId;
