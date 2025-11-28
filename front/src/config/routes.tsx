@@ -5,6 +5,7 @@ import Beneficiary from "../apps/BeneficiaryPage/page";
 import VirementPage from "../apps/VirementPage/page";
 import Transaction from "../apps/TransactionPage/Transaction";
 import Dashboard from "../apps/Dashboardage/dashboard";
+import ProfilPage from "../apps/ProfilPage/page";
 
 export const routes = [
     {
