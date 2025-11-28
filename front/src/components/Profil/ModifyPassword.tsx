@@ -2,7 +2,7 @@ import { useState, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
-function ModiFyProfile() {
+function ModifyPassword() {
     const [error, setError] = useState("");
     const [password, setPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -10,15 +10,21 @@ function ModiFyProfile() {
     const navigate = useNavigate();
     const { token } = useAuth();
 
-    async function Modify() {
-        if (newPassword !== confirmNewPassword) {
-            setError("Les mots de passe ne correspondent pas.");
-            return;
-        }
+    function verifPassword() {
 
         if (!newPassword.trim() || !confirmNewPassword.trim() || !password.trim()) {
             setError("Les champs ne doivent pas etre vide");
-            return;
+            return false
+        }
+
+        if (newPassword !== confirmNewPassword) {
+            setError("Les mots de passe ne correspondent pas.");
+            return false
+        }
+
+        if (newPassword.trim() == password.trim()) {
+            setError("Le mot de passe actuel et le nouveau mot de passe ne doivent pas être identique")
+            return false
         }
 
         const hasMinLength = newPassword.length >= 8;
@@ -27,35 +33,44 @@ function ModiFyProfile() {
 
         if (!hasMinLength || !hasDigit || !hasSpecialChar) {
             setError("Le mot de passe doit contenir au moins 8 caractères, un chiffre et un caractère spécial.");
-            return;
+            return false
         }
 
-        try {
-            const requestBody = {
-                current_password: password,
-                new_password: newPassword
-            };
+        return true
+    }
 
-            const response = await fetch('http://localhost:8000/auth/change-password', { 
-                method: 'POST',
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody), 
-            });
+    async function Modify() {
+        setError("");
+        let verif = verifPassword();
 
-            const data = await response.json();
+        if (verif) {
+            try {
+                const requestBody = {
+                    current_password: password,
+                    new_password: newPassword
+                };
 
-            if (!response.ok) {
-                const errorMessage = data.message || data.detail?.[0]?.msg || JSON.stringify(data) || 'Erreur lors de l\'inscription.';
-                throw new Error(errorMessage);
-            }
-            
-            navigate('/connexion');
+                const response = await fetch('http://localhost:8000/auth/change-password', { 
+                    method: 'POST',
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody), 
+                });
 
-        } catch (err: any) {
-            setError(err.message);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const errorMessage = data.message || data.detail?.[0]?.msg || JSON.stringify(data) || 'Erreur lors de la récupération de mot de passe';
+                    throw new Error(errorMessage);
+                }
+                
+                navigate('/connexion');
+
+            } catch (err: any) {
+                setError("Erreur lors de la modification du mot de passe");
+            }         
         }
     }
 
@@ -72,8 +87,8 @@ function ModiFyProfile() {
     };
 
     return (
-        <div className="px-7 py-8 border-0 rounded-2xl bg-white z-10 w-[400px]">
-            <h2 className="text-2xl   font-bold mb-6 text-left">Changer de mot de passe</h2>
+        <div className="px-7 py-8 border-0 rounded-2xl bg-white w-[400px]">
+            <h2 className="text-2xl font-bold mb-6 text-left">Changer de mot de passe</h2>
             {error && (
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                     <span className="block sm:inline"> {error}</span>
@@ -101,4 +116,4 @@ function ModiFyProfile() {
     )
 }
 
-export default ModiFyProfile;
+export default ModifyPassword;

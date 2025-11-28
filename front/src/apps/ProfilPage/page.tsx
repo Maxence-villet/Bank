@@ -1,4 +1,5 @@
-import ModiFyProfile from "../../components/Profil/ModifyProfile";
+import ModifyMail from "../../components/Profil/ModifyMail";
+import ModiFyProfile from "../../components/Profil/ModifyPassword";
 
 function ProfilPage() {
     return (
@@ -9,7 +10,10 @@ function ProfilPage() {
                     <h1 className="text-5xl font-bold">Profil</h1>
                 </div>
             </div>
-            <ModiFyProfile />
+            <div className="flex flex-col gap-8 md:flex-row">
+                <ModiFyProfile />
+                <ModifyMail />
+            </div>
         </div>
         </>
     )
