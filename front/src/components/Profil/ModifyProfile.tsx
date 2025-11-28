@@ -8,7 +8,7 @@ function ModiFyProfile() {
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const navigate = useNavigate();
-    const token = useAuth();
+    const { token } = useAuth();
 
     async function Modify() {
         if (newPassword !== confirmNewPassword) {
