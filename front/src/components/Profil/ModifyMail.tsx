@@ -15,7 +15,7 @@ function ModifyMail() {
             setError("Les champs ne doivent pas etre vide");
             return false
         }
-        const regex = /^\S+@\S+\.\S+$/.test(mail);
+        const regex = /^\S+@\S+\.\S+$/.test(mail); // verifie que ça fasse (char)@(char).(char) char => caractères
 
         if (!regex) {
             setError("L'email donné n'est pas valide")

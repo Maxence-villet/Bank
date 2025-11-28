@@ -28,8 +28,8 @@ function ModifyPassword() {
         }
 
         const hasMinLength = newPassword.length >= 8;
-        const hasDigit = /\d/.test(newPassword);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword);
+        const hasDigit = /\d/.test(newPassword); // regarde s'il y a un nombre(digit)
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(newPassword); // compte le nombre de charactère special
 
         if (!hasMinLength || !hasDigit || !hasSpecialChar) {
             setError("Le mot de passe doit contenir au moins 8 caractères, un chiffre et un caractère spécial.");
