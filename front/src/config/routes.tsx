@@ -4,6 +4,7 @@ import MyAccount from "../apps/MyAccountPage/page";
 import Beneficiary from "../apps/BeneficiaryPage/page";
 import VirementPage from "../apps/VirementPage/page";
 import Transaction from "../apps/TransactionPage/Transaction";
+import ProfilPage from "../apps/ProfilPage/page";
 
 
 
