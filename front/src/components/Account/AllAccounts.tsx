@@ -1,29 +1,23 @@
-import { useEffect, useState } from "react";
-import Account from "../Account/Account";
+import Account from "./Account";
 
 interface AccountType {
-    id: number,
-    name: string,
-    amount: number,
-    iban: string,
+    id: string;
+    name: string;
+    amount: number;
+    iban: string;
 }
 
-function AllAccounts() {
-    const [accounts, setAccounts] = useState<AccountType[]>([]);
+interface AllAccountsProps {
+    accounts: AccountType[];
+    onClose?: () => void;
+}
 
-    function getAccounts () {
-        const nouveauxComptes = [
-            { id: 1, name: "Compte Chèques", amount: 1500, iban: "FR76 7003 6010 5678" },
-            { id: 2, name: "Compte Épargne", amount: 5000, iban: "FR76 7003 6010 1234" },
-            { id: 3, name: "Compte Investissement", amount: 12000, iban: "FR76 7003 6010 9876" },
-        ];
-
-        setAccounts(nouveauxComptes)
+function AllAccounts({ accounts, onClose }: AllAccountsProps) {
+    const formatIban = (iban: string) => {
+        if (!iban) return '';
+        const first16 = iban.slice(0, 16);
+        return first16.match(/.{1,4}/g)?.join(' ') ?? first16;
     }
-
-    useEffect(() => {
-        getAccounts();
-    }, []);
 
     return(
         <>
@@ -33,8 +27,9 @@ function AllAccounts() {
                         key={account.id}
                         id={account.id}
                         name={account.name}
-                        amount={account.amount}
-                        iban={account.iban}
+                        amount={account.amount / 100} // Divide by 100 for euros
+                        iban={formatIban(account.iban)}
+                        onClose={onClose}
                     />
                 ))}
             </div>
