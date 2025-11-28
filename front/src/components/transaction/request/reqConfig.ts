@@ -1,0 +1,1 @@
+export  const apihost = import.meta.env.VITE_API_HOST || "http://localhost:8000";
