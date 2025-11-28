@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import CardGenerator from "./cardGenerator";
 // Assurez-vous que le chemin d'import est bon
 import { useAllTransactions } from "./request/getAllTransaction"; 
-import React from "react";
 
 // Ton interface actuelle
 interface CardData {
@@ -32,23 +31,15 @@ const TransactionPagination = ({ filter }: { filter: 'transactions' | 'recettes'
     // 2. Console log pour voir la structure de ton API
     useEffect(() => {
         if (rawData) {
-            console.log("🔥 Données brutes de l'API :", rawData);
+            console.log(" Données brutes de l'API :", rawData);
         }
     }, [rawData]);
 
-    // 3. Logique de fallback
-    // ATTENTION : rawData contient la structure de ton API, pas encore CardData.
-    // Si tu passes rawData directement à CardGenerator sans conversion, ça risque de casser l'affichage 
-    // si les noms des propriétés (title vs label, price vs amount) sont différents.
-    // Pour l'instant, je le cast en 'any' pour éviter l'erreur TS, mais tu devras faire un .map() ici plus tard.
-    
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const displayData = (rawData as any[]) ?? cards2;
-    console.log("🔥 Données affichées :", displayData);
-    // Si tu veux utiliser uniquement cards2 tant que la conversion n'est pas faite, décommente la ligne ci-dessous :
-    // const displayData = cards2; 
-
-    // --- Pagination Logic ---
+    console.log(" Données affichées :", displayData);
+ 
     const [currentPage, setCurrentPage] = useState(1);
     const cardsPerPage = 5;
 
