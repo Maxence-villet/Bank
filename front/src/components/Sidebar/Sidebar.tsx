@@ -11,7 +11,7 @@ const sidebarButtons = [
     { name: "Dashboard", key: "Home", path: "/", Icon: HomeButton }, 
     { name: "Mes comptes", key: "CreditCard", path: "/comptes", Icon: CreditCardButton },
     { name: "Transactions", key: "List", path: "/transactions", Icon: ListButton }, 
-    { name: "Virements", key: "Send", path: "/virements", Icon: SendButton }, 
+    { name: "Virements", key: "Send", path: "/virement/type", Icon: SendButton }, 
     { name: "Beneficiaires", key: "AddUser", path: "/beneficiaires", Icon: AddUserButton },
 ]
 

@@ -13,6 +13,7 @@ function RegisterForm() {
     const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -21,6 +22,16 @@ function RegisterForm() {
 
         if (password !== confirmPassword) {
             setError("Les mots de passe ne correspondent pas.");
+            setIsLoading(false);
+            return;
+        }
+
+        const hasMinLength = password.length >= 8;
+        const hasDigit = /\d/.test(password);
+        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+        if (!hasMinLength || !hasDigit || !hasSpecialChar) {
+            setError("Le mot de passe doit contenir au moins 8 caractères, un chiffre et un caractère spécial.");
             setIsLoading(false);
             return;
         }
@@ -47,6 +58,7 @@ function RegisterForm() {
                 const errorMessage = data.message || data.detail?.[0]?.msg || JSON.stringify(data) || 'Erreur lors de l\'inscription.';
                 throw new Error(errorMessage);
             }
+            
             setSuccess(data.message || "Inscription réussie ! Vous allez être redirigé vers la page de connexion.");
             
             setTimeout(() => {
@@ -62,10 +74,7 @@ function RegisterForm() {
 
     
     return (
-        // 1. Suppression de overflow-hidden du conteneur principal
         <div className="flex h-screen w-full bg-white font-sans">
-            {/* 2. Ajout de h-screen et overflow-y-auto à la div de gauche
-                 3. Remplacement de justify-center par items-start pour un défilement propre depuis le haut */}
             <div className="w-full md:w-1/2 flex flex-col items-start px-8 md:px-16 lg:px-24 py-10 h-screen overflow-y-auto">
                 <div className="w-full max-w-md mx-auto">
                     <div className="flex items-center gap-3 mb-12">
@@ -79,14 +88,12 @@ function RegisterForm() {
                                     fill="#58C5C3"
                                 />
                                 </g>
-
                                 <path
                                 fillRule="evenodd"
                                 clipRule="evenodd"
                                 d="M12.441 15.2664C7.22059 21.066 7.41086 29.4769 12.7026 34.7769L23.1495 25.1882C29.5412 19.3172 30.0347 8.82432 23.7262 2.87598C23.7262 2.87598 17.6615 9.46674 12.441 15.2664Z"
                                 fill="#58C5C3"
                                 />
-
                                 <defs>
                                 <filter id="filter0_i_1387_84" x="0" y="0" width="47" height="47" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                                     <feFlood floodOpacity="0" result="BackgroundImageFix" />
@@ -110,6 +117,7 @@ function RegisterForm() {
                         Rejoignez des milliers d'utilisateurs
                     </h2>
                     
+           
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                             <span className="block sm:inline"> {error}</span>
@@ -221,8 +229,6 @@ function RegisterForm() {
             </div>
             </div>
         </div>
-
-        
     );
 };
 
