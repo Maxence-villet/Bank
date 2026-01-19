@@ -5,3 +5,5 @@ passlib
 pyjwt
 apscheduler
 psycopg2-binary
+pytest
+httpx
