@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: bank_db
+    restart: always
+    environment:
+      POSTGRES_USER: user_bank
+      POSTGRES_PASSWORD: bank_password
+      POSTGRES_DB: bank_database
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    container_name: bank_api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user_bank:bank_password@db:5432/bank_database
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

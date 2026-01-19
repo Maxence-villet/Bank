@@ -4,3 +4,4 @@ bcrypt==4.3.0
 passlib
 pyjwt
 apscheduler
+psycopg2-binary

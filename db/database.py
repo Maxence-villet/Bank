@@ -1,9 +1,9 @@
+import os
 from sqlmodel import Session, create_engine, SQLModel
 
-sqlite_file_name = "database.db"
-DATABASE_URL = f"sqlite:///{sqlite_file_name}"
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user_bank:bank_password@localhost:5432/bank_database")
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(DATABASE_URL)
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
