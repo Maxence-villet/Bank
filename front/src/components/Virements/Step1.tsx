@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import SendButton from "../SvgIcons/SendButton";
 import ArrowButton from "../SvgIcons/ArrowButton";
 import GlobelButton from "../SvgIcons/GlobelButton";
