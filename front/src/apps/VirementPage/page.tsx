@@ -338,7 +338,6 @@ function VirementPage() {
                 case 4:
                     return (
                         <Step4Externe
-                            onPrevious={handlePrevious}
                         />
                     );
                 default:
