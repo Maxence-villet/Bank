@@ -13,9 +13,9 @@ def parse_euro_string(euro_string: str) -> int:
     try:        
         euros_part, cents_part = euro_string.split(',')
         if len(cents_part) != 2:
-            raise ValueError("Invalid euro string, cents part must be 2 digits")
+            return {"error": "Invalid euro string, cents part must be 2 digits", "status_code": 403}
         euros = int(euros_part)
         cents = int(cents_part)
         return euros * 100 + cents
     except ValueError:
-        raise ValueError("Invalid euro string")
+        return {"error": "Invalid euro string", "status_code": 403}

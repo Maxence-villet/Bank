@@ -37,14 +37,14 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> Optional[str]:
     )
 
     if not token:
-        raise credentials_exception
-
+        return {"error": credentials_exception, "status_code": 403}
+    
     payload = decode_access_token(token)
     if payload is None:
-        raise credentials_exception
+        return {"error": credentials_exception, "status_code": 403}
 
     user_id: str = payload.get("sub")
     if user_id is None:
-        raise credentials_exception
+        return {"error": credentials_exception, "status_code": 403}
 
     return user_id
