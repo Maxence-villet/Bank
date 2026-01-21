@@ -11,7 +11,7 @@ function MyAccount() {
         queryKey: ['accounts'],
         queryFn: async () => {
             if (!token) throw new Error('No token');
-            const response = await fetch('http://localhost:8000/accounts/user', {
+            const response = await fetch('https://bank-lmpk.onrender.com/accounts/user', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

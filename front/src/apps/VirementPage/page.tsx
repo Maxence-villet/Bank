@@ -103,7 +103,7 @@ function VirementPage() {
       queryKey: ['accounts'],
       queryFn: async () => {
         if (!token) throw new Error('No token');
-        const response = await fetch('http://localhost:8000/accounts/user', {
+        const response = await fetch('https://bank-lmpk.onrender.com/accounts/user', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -118,7 +118,7 @@ function VirementPage() {
 
     const createMutation = useMutation({
       mutationFn: async (data: { sender_id: string; receiver_id: string; amount: number; description: string }) => {
-        const response = await fetch('http://localhost:8000/transaction/create', {
+        const response = await fetch('https://bank-lmpk.onrender.com/transaction/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ function VirementPage() {
 
     const cancelMutation = useMutation({
       mutationFn: async (uuid: string) => {
-        const response = await fetch(`http://localhost:8000/transaction/cancel/${uuid}`, {
+        const response = await fetch(`https://bank-lmpk.onrender.com/transaction/cancel/${uuid}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -338,7 +338,6 @@ function VirementPage() {
                 case 4:
                     return (
                         <Step4Externe
-                            onPrevious={handlePrevious}
                         />
                     );
                 default:

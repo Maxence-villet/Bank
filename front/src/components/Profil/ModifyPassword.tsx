@@ -50,7 +50,7 @@ function ModifyPassword() {
                     new_password: newPassword
                 };
 
-                const response = await fetch('http://localhost:8000/auth/change-password', { 
+                const response = await fetch('https://bank-lmpk.onrender.com/auth/change-password', { 
                     method: 'POST',
                     headers: {
                         "Authorization": `Bearer ${token}`,

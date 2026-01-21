@@ -41,7 +41,7 @@ function AddBeneficiary({ onAdd }: AddBeneficiaryProps) {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/beneficiaries/iban/${encodeURIComponent(iban)}?first_name=${encodeURIComponent(firstName)}&last_name=${encodeURIComponent(lastName)}`, {
+            const response = await fetch(`https://bank-lmpk.onrender.com/beneficiaries/iban/${encodeURIComponent(iban)}?first_name=${encodeURIComponent(firstName)}&last_name=${encodeURIComponent(lastName)}`, {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,

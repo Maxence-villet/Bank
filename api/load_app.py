@@ -47,17 +47,9 @@ async def lifespan(app: FastAPI):
 def load_app() -> FastAPI:
     app = FastAPI(lifespan=lifespan)
 
-    # --- Middleware ---
-    origins = [
-        "http://localhost",
-        "http://localhost:8080",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ]
-
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=origins,
+        allow_origins=["https://bank-dgzkzr4xq-maxences-projects-c03ed237.vercel.app/"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
