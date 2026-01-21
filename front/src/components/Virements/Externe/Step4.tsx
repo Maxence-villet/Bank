@@ -1,10 +1,6 @@
 import TransferConfirmation from '../Shared/TransferConfirmation';
 
-interface Step4ExterneProps {
-    onPrevious: () => void;
-}
-
-function Step4({ onPrevious }: Step4ExterneProps) {
+function Step4({ }) {
     const transferAmount = "345";
     const beneficiaryName = "Collocation";
 
@@ -17,7 +13,6 @@ function Step4({ onPrevious }: Step4ExterneProps) {
 
     return (
         <TransferConfirmation
-            onPrevious={onPrevious}
             transferAmount={transferAmount}
             beneficiaryName={beneficiaryName}
             steps={steps}
