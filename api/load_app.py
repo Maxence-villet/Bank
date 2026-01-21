@@ -49,7 +49,7 @@ def load_app() -> FastAPI:
 
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["https://bank-sandy-seven.vercel.app/"],
+        allow_origins=["https://bank-sandy-seven.vercel.app"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
