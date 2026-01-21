@@ -32,7 +32,7 @@ function CloseAccount({ id, onClose }: CloseAccountProps) {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/accounts/close/${id}`, {
+            const response = await fetch(`https://bank-lmpk.onrender.com/accounts/close/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,

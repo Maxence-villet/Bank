@@ -17,7 +17,7 @@ function addAccount() {
             setError("Le nom du compte ne peut pas être vide")
         } else {
             try {
-                const response = await fetch('http://localhost:8000/accounts/open', {
+                const response = await fetch('https://bank-lmpk.onrender.com/accounts/open', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

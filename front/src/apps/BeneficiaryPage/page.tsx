@@ -25,7 +25,7 @@ function Beneficiary() {
         try {
             setLoading(true);
             setError("");
-            const response = await fetch("http://localhost:8000/beneficiaries/user", {
+            const response = await fetch("https://bank-lmpk.onrender.com/beneficiaries/user", {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,

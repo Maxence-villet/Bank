@@ -23,7 +23,7 @@ function DeleteBeneficiary({ id, onDelete }: DeleteBeneficiaryProps) {
         }
 
         try {
-            const response = await fetch(`http://localhost:8000/beneficiaries/beneficiary/${id}`, {
+            const response = await fetch(`https://bank-lmpk.onrender.com/beneficiaries/beneficiary/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Authorization": `Bearer ${token}`,
